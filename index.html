@@ -2,210 +2,489 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GATE XE 2027 Tracker</title>
-<meta name="description" content="Day-by-day GATE XE 2027 plan (Engineering Mathematics, Materials Science, Thermodynamics) with checkboxes, syllabus coverage and a catch-up planner.">
+<meta name="description" content="Day-by-day GATE XE 2027 plan (Engineering Mathematics, Materials Science, Thermodynamics) with checkboxes, syllabus coverage, a mock-score log and a catch-up planner.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233b5bdb'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
 :root{
-  --bg:#f6f5f1; --surface:#ffffff; --surface-2:#efede7; --ink:#1d1c1a; --ink-2:#55524c; --line:#dcd8cf;
-  --accent:#2f5d8a; --accent-ink:#ffffff; --ok:#2e7d4f; --warn:#b26b00; --bad:#b3261e;
-  --xe2:#7a4fb5; --xe4:#c0562b; --xe0:#2f7d8a; --pr:#5b6b2f; --ga:#8a6d2f; --app:#a33a6e; --mock:#1d1c1a;
-  --radius:10px; --shadow:0 1px 2px rgba(0,0,0,.06);
+  --bg:#f4f3ef; --surface:#ffffff; --surface-2:#f1efe9; --surface-3:#e4e1d8;
+  --ink:#1b1a17; --ink-2:#55524b; --ink-3:#8a867d; --line:#e4e1d9;
+  --accent:#3b5bdb; --accent-ink:#ffffff; --accent-soft:#e6ebfb;
+  --ok:#2f7d4f; --ok-soft:#e2f1e7; --warn:#a35f00; --warn-soft:#fbefd9; --bad:#b3261e; --bad-soft:#fbe4e2;
+  --c-xe2:#7c4dbd; --c-xe4:#c4532a; --c-xe0:#1d7c89; --c-pr:#5b6c22; --c-ga:#8c6a1f; --c-app:#b0336f; --c-mock:#3a372f; --c-rev:#3b5bdb;
+  --shadow:0 1px 2px rgba(30,25,15,.05),0 2px 8px rgba(30,25,15,.04);
+  --r:14px;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#151513; --surface:#1f1f1c; --surface-2:#2a2a26; --ink:#ecebe6; --ink-2:#a9a69e; --line:#3a3934;
-    --accent:#7fb0e0; --accent-ink:#0f1a24; --ok:#6cc790; --warn:#e5a54a; --bad:#ef7a72;
-    --xe2:#b393e6; --xe4:#ee8c63; --xe0:#6cc3cf; --pr:#a8bb6c; --ga:#d4b56e; --app:#e07aaa; --mock:#ecebe6;
+    --bg:#121211; --surface:#1c1c1a; --surface-2:#252522; --surface-3:#34332f;
+    --ink:#edebe5; --ink-2:#b3b0a7; --ink-3:#85827a; --line:#2f2e2a;
+    --accent:#8aa4ff; --accent-ink:#0e1530; --accent-soft:#232b48;
+    --ok:#67c48c; --ok-soft:#1d3326; --warn:#e8a64a; --warn-soft:#3a2c14; --bad:#f07b72; --bad-soft:#3d1e1b;
+    --c-xe2:#b896ec; --c-xe4:#f08e64; --c-xe0:#5fc6d3; --c-pr:#b0c46c; --c-ga:#d9b86b; --c-app:#ec7fb1; --c-mock:#d8d5cc; --c-rev:#8aa4ff;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+    color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#151513; --surface:#1f1f1c; --surface-2:#2a2a26; --ink:#ecebe6; --ink-2:#a9a69e; --line:#3a3934;
-  --accent:#7fb0e0; --accent-ink:#0f1a24; --ok:#6cc790; --warn:#e5a54a; --bad:#ef7a72;
-  --xe2:#b393e6; --xe4:#ee8c63; --xe0:#6cc3cf; --pr:#a8bb6c; --ga:#d4b56e; --app:#e07aaa; --mock:#ecebe6;
+  --bg:#121211; --surface:#1c1c1a; --surface-2:#252522; --surface-3:#34332f;
+  --ink:#edebe5; --ink-2:#b3b0a7; --ink-3:#85827a; --line:#2f2e2a;
+  --accent:#8aa4ff; --accent-ink:#0e1530; --accent-soft:#232b48;
+  --ok:#67c48c; --ok-soft:#1d3326; --warn:#e8a64a; --warn-soft:#3a2c14; --bad:#f07b72; --bad-soft:#3d1e1b;
+  --c-xe2:#b896ec; --c-xe4:#f08e64; --c-xe0:#5fc6d3; --c-pr:#b0c46c; --c-ga:#d9b86b; --c-app:#ec7fb1; --c-mock:#d8d5cc; --c-rev:#8aa4ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
-.wrap{max-width:980px;margin:0 auto;padding:16px}
-header{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between;margin:8px 0 12px}
-h1{font-size:1.4rem;margin:0;letter-spacing:-.01em}
-.sub{color:var(--ink-2);font-size:.9rem}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-button,select,input[type=date]{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
-button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;margin:12px 0}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.stat .k{color:var(--ink-2);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
-.stat .v{font-size:1.35rem;font-weight:650;font-variant-numeric:tabular-nums}
-.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:6px}
-.bar>i{display:block;height:100%;background:var(--accent);width:0}
-.status{border-left:4px solid var(--ok)}
-.status.behind{border-left-color:var(--warn)}
-.status.far{border-left-color:var(--bad)}
-.status h2{margin:0 0 4px;font-size:1.05rem}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-top:16px;overflow-x:auto}
-.tabs button{border:none;border-bottom:2px solid transparent;border-radius:0;background:none;padding:8px 12px;color:var(--ink-2);white-space:nowrap}
-.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
-.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
-.filters label{font-size:.9rem;color:var(--ink-2);display:flex;gap:6px;align-items:center}
-.phase{margin:22px 0 6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
-.day{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:10px 0;overflow:hidden}
-.day.today{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent)}
-.day.overdue .dh .d{color:var(--warn)}
-.dh{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;background:var(--surface-2);cursor:pointer;user-select:none}
-.dh .d{font-weight:650}
-.dh .meta{color:var(--ink-2);font-size:.85rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-.day ul{list-style:none;margin:0;padding:4px 0}
-.day li{display:flex;gap:10px;align-items:flex-start;padding:7px 14px;border-top:1px solid var(--line)}
-.day li:first-child{border-top:none}
-.day li input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--accent)}
-.day li.done .txt{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--line)}
-.tag{flex:none;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 6px;border-radius:5px;color:#fff;margin-top:2px;min-width:44px;text-align:center}
-.t-XE2{background:var(--xe2)}.t-XE4{background:var(--xe4)}.t-XE0{background:var(--xe0)}.t-PR{background:var(--pr)}.t-GA{background:var(--ga)}.t-APP{background:var(--app)}.t-MOCK{background:var(--mock);color:var(--bg)}.t-REV{background:var(--accent);color:var(--accent-ink)}
-.txt{flex:1;min-width:0}
-.ref{display:block;color:var(--ink-2);font-size:.82rem}
-.hy{font-size:.68rem;font-weight:700;color:var(--warn);border:1px solid var(--warn);border-radius:4px;padding:0 4px;margin-left:6px;white-space:nowrap}
-.moved{font-size:.68rem;color:var(--accent);margin-left:6px;white-space:nowrap}
-.collapsed ul{display:none}
-.sec{margin:10px 0}
-.sec h3{font-size:1rem;margin:16px 0 6px}
-.srow{display:grid;grid-template-columns:1fr 120px 90px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
-.srow .n{font-weight:600}
-.srow .desc{color:var(--ink-2);font-size:.83rem}
-.srow label{font-size:.85rem;display:flex;gap:6px;align-items:center;justify-content:flex-end}
-.muted{color:var(--ink-2)}
-.list{margin:6px 0 0;padding-left:18px}
-.list li{margin:3px 0}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;line-height:1.25}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;padding:0;border:0}
 .hidden{display:none!important}
-footer{color:var(--ink-2);font-size:.8rem;margin:28px 0 12px}
-@media (max-width:600px){
-  .srow{grid-template-columns:1fr;gap:4px}
-  .srow label{justify-content:flex-start}
-  .dh .meta{font-size:.78rem}
-  h1{font-size:1.2rem}
+.muted{color:var(--ink-2)}
+.faint{color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:30;background:var(--bg);background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1100px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{flex:none;width:34px;height:34px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:.7rem;font-weight:800;letter-spacing:.02em}
+.brand b{display:block;font-size:1rem;white-space:nowrap}
+.brand small{display:block;color:var(--ink-3);font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;gap:2px;margin-left:auto;background:var(--surface-2);padding:3px;border-radius:11px}
+.tabs button{border:0;background:none;padding:6px 14px;border-radius:8px;cursor:pointer;color:var(--ink-2);font-weight:550;white-space:nowrap}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.iconbtn{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2)}
+.iconbtn:hover{color:var(--ink)}
+.iconbtn svg{width:18px;height:18px}
+.bottom{display:none}
+
+/* ---------- layout ---------- */
+main{max-width:1100px;margin:0 auto;padding:18px 16px 48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px 10px}
+.card-h h2{font-size:1rem}
+.card-h .sub{font-size:.82rem;color:var(--ink-3)}
+.card-b{padding:0 16px 16px}
+.stack{display:grid;gap:16px;align-content:start}
+.grid2{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:16px;align-items:start}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ---------- metrics ---------- */
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.metric{padding:14px 16px;display:flex;align-items:center;gap:12px;min-width:0;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow)}
+button.metric{cursor:pointer}
+button.metric:hover{border-color:var(--ink-3)}
+.metric .mv{font-size:1.45rem;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.metric .mk{font-size:.75rem;color:var(--ink-3);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.metric .ms{font-size:.8rem;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.metric.warn .mv{color:var(--warn)} .metric.bad .mv{color:var(--bad)} .metric.ok .mv{color:var(--ok)}
+.ring{--p:0;--size:28px;--th:4px;--fill:var(--ok);position:relative;flex:none;width:var(--size);height:var(--size);border-radius:50%;background:conic-gradient(var(--fill) calc(var(--p)*1%),var(--surface-3) 0)}
+.ring::after{content:"";position:absolute;inset:var(--th);border-radius:50%;background:var(--surface)}
+.ring.big{--size:50px;--th:6px;--fill:var(--accent)}
+.ring>span{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-size:.72rem;font-weight:700}
+
+/* ---------- banner ---------- */
+.banner{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface)}
+.banner .bi{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.banner.ok .bi{background:var(--ok-soft);color:var(--ok)}
+.banner.warn{background:var(--warn-soft);border-color:transparent}
+.banner.warn .bi{background:var(--warn);color:var(--surface)}
+.banner.bad{background:var(--bad-soft);border-color:transparent}
+.banner.bad .bi{background:var(--bad);color:var(--surface)}
+.banner h2{font-size:1.02rem;margin-bottom:2px}
+.banner p{margin:0;font-size:.9rem;color:var(--ink-2)}
+.banner .bx{flex:1;min-width:0}
+.banner .ba{flex:none;align-self:center}
+
+/* ---------- buttons, pills, chips ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 14px;cursor:pointer;font-weight:550;white-space:nowrap}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.danger{color:var(--bad)}
+.btn.sm{padding:4px 10px;font-size:.85rem;border-radius:8px}
+.btn.link{border:0;background:none;padding:0;color:var(--accent);font-weight:600}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chip{--c:var(--ink-2);display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:650;line-height:1;padding:4px 8px;border-radius:99px;color:var(--c);background:var(--surface-2);background:color-mix(in srgb,var(--c) 13%,transparent);white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c)}
+.c-XE2{--c:var(--c-xe2)}.c-XE4{--c:var(--c-xe4)}.c-XE0{--c:var(--c-xe0)}.c-PR{--c:var(--c-pr)}.c-GA{--c:var(--c-ga)}.c-APP{--c:var(--c-app)}.c-MOCK{--c:var(--c-mock)}.c-REV{--c:var(--c-rev)}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;line-height:1;padding:4px 7px;border-radius:99px;white-space:nowrap;letter-spacing:.02em}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.accent{background:var(--accent-soft);color:var(--accent)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:none;padding:5px 12px;border-radius:7px;cursor:pointer;color:var(--ink-2);font-weight:550;font-size:.88rem}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.seg.sm button{padding:3px 10px;font-size:.8rem}
+.seg .lv-w[aria-pressed="true"]{color:var(--bad)} .seg .lv-o[aria-pressed="true"]{color:var(--warn)} .seg .lv-s[aria-pressed="true"]{color:var(--ok)}
+
+/* ---------- tasks ---------- */
+.tasks{list-style:none;margin:0;padding:0}
+.task{border-top:1px solid var(--line)}
+.trow{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;cursor:pointer;transition:background .12s}
+.trow:hover{background:var(--surface-2)}
+.box{flex:none;width:22px;height:22px;margin-top:1px;border-radius:7px;border:2px solid var(--ink-3);display:grid;place-items:center;transition:background .15s,border-color .15s}
+.box svg{width:14px;height:14px;opacity:0;transform:scale(.5);transition:opacity .15s,transform .15s}
+input:checked+.box{background:var(--ok);border-color:var(--ok)}
+input:checked+.box svg{opacity:1;transform:none}
+input:focus-visible+.box{outline:2px solid var(--accent);outline-offset:2px}
+.tbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.tmeta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ttext{font-size:.95rem}
+.tref{font-size:.8rem;color:var(--ink-3)}
+.task.done .ttext{color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:1px}
+.grp{padding:10px 16px 6px;font-size:.78rem;font-weight:650;color:var(--ink-3);border-top:1px solid var(--line);background:var(--surface-2)}
+
+/* ---------- today ---------- */
+.today-h{padding:16px 16px 12px;display:flex;gap:14px;align-items:center}
+.today-h .dt{flex:1;min-width:0}
+.today-h h2{font-size:1.25rem}
+.bar{height:6px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--ok);border-radius:99px;transition:width .3s}
+.alldone{margin:0;padding:14px 16px;border-top:1px solid var(--line);color:var(--ok);font-weight:600}
+.mini{list-style:none;margin:0;padding:0}
+.mini li{display:flex;gap:10px;align-items:flex-start;padding:9px 16px;border-top:1px solid var(--line);font-size:.88rem}
+.mini li .when{flex:none;width:62px;color:var(--ink-3);font-size:.78rem;font-weight:600;padding-top:2px}
+.mini li .what{flex:1;min-width:0}
+.mini li .what span.t{display:block;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.empty{padding:10px 16px 16px;margin:0;color:var(--ink-3);font-size:.88rem}
+
+/* ---------- plan ---------- */
+.planwrap{display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px;align-items:start}
+.planaside{position:sticky;top:76px}
+.calbox summary{cursor:pointer;list-style:none}
+.calbox summary::-webkit-details-marker{display:none}
+.calbox summary h2::after{content:" ▾";color:var(--ink-3);font-size:.8em}
+.calbox:not([open]) summary h2::after{content:" ▸"}
+.calbox:not([open]) summary{padding-bottom:14px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:0 14px 6px}
+.cal .dow{font-size:.68rem;font-weight:650;color:var(--ink-3);text-align:center;padding-bottom:2px}
+.cell{position:relative;height:38px;border:0;border-radius:8px;background:var(--surface-2);color:var(--ink-2);font-size:.78rem;font-weight:600;cursor:pointer;padding:0;font-variant-numeric:tabular-nums}
+.cell:hover{filter:brightness(.96)}
+.cell.blank{background:transparent;cursor:default;color:var(--ink-3);font-weight:400}
+.cell.part{background:var(--ok-soft);color:var(--ok)}
+.cell.full{background:var(--ok);color:var(--surface)}
+.cell.over{box-shadow:inset 0 0 0 2px var(--warn);color:var(--warn)}
+.cell.now{box-shadow:inset 0 0 0 2px var(--accent)}
+.cell.exam{background:var(--bad);color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.03em}
+.cell .m{position:absolute;top:2px;left:5px;font-size:.55rem;font-weight:700;text-transform:uppercase;opacity:.75}
+.cell .dot{position:absolute;bottom:4px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--c-mock)}
+.cell .dot.app{background:var(--c-app)}
+.cell.full .dot{background:var(--surface)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;padding:8px 16px 14px;font-size:.74rem;color:var(--ink-3)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;background:var(--surface-2)}
+.legend i.part{background:var(--ok-soft);box-shadow:inset 0 0 0 1px var(--ok)}
+.legend i.full{background:var(--ok)}
+.legend i.over{box-shadow:inset 0 0 0 2px var(--warn)}
+.legend i.now{box-shadow:inset 0 0 0 2px var(--accent)}
+.legend i.dm{width:7px;height:7px;border-radius:50%;background:var(--c-mock)}
+.legend i.da{width:7px;height:7px;border-radius:50%;background:var(--c-app)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.search{flex:1 1 220px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 12px}
+.search svg{width:16px;height:16px;color:var(--ink-3);flex:none}
+.search input{flex:1;min-width:0;border:0;background:none;padding:8px 0;outline:none}
+.secchips{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.secchips::-webkit-scrollbar{display:none}
+.secchips button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 12px;font-size:.82rem;font-weight:550;cursor:pointer;white-space:nowrap;color:var(--ink-2)}
+.secchips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;color:var(--ink-2);cursor:pointer;user-select:none}
+.toggle input{width:16px;height:16px;accent-color:var(--accent)}
+.phaseh{margin:22px 0 4px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.phaseh:first-child{margin-top:8px}
+.phaseh h2{font-size:1.1rem}
+.phaseh .pr{font-size:.82rem;color:var(--ink-3);white-space:nowrap}
+.week{margin:16px 0 6px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin:8px 0;overflow:hidden;scroll-margin-top:84px;box-shadow:var(--shadow)}
+.day.now{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.day.flash{animation:flash 1.2s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 5px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+.dhead{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;background:none;border:0;text-align:left;cursor:pointer}
+.dhead:hover{background:var(--surface-2)}
+.dnum{flex:none;width:40px;text-align:center;line-height:1.1}
+.dnum b{display:block;font-size:1.2rem;font-variant-numeric:tabular-nums}
+.dnum span{display:block;font-size:.66rem;font-weight:650;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+.dtitle{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.dl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-weight:650}
+.dchips{display:flex;gap:4px;flex-wrap:wrap}
+.day.open .dchips{display:none}
+.dprog{flex:none;display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.chev{flex:none;width:18px;height:18px;color:var(--ink-3);transition:transform .2s}
+.day.open .chev{transform:rotate(180deg)}
+.day .tasks{display:none}
+.day.open .tasks{display:block}
+.day.complete .dl{color:var(--ink-2)}
+
+/* ---------- syllabus ---------- */
+.subjects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.subj{padding:14px 16px;display:flex;gap:12px;align-items:center}
+.subj h3{font-size:.95rem}
+.subj .cnt{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) 150px auto;gap:14px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.srow .n{font-weight:650;font-size:.93rem}
+.srow .n code{font:inherit;color:var(--ink-3);font-weight:600;margin-right:6px;font-variant-numeric:tabular-nums}
+.srow .d{font-size:.8rem;color:var(--ink-3);margin-top:2px}
+.srow .p{font-size:.75rem;color:var(--ink-3);margin-bottom:4px;font-variant-numeric:tabular-nums}
+.note{font-size:.88rem;color:var(--ink-2);margin:0 0 14px}
+
+/* ---------- mocks ---------- */
+#v-mocks{display:grid;gap:16px;align-content:start}
+#v-mocks .statrow{margin:0}
+.form{display:grid;grid-template-columns:170px minmax(0,1fr) 100px 100px;gap:10px;align-items:end}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;font-weight:600;color:var(--ink-3)}
+.form .wide{grid-column:1/-1}
+.form input,.form textarea,.field{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:7px 10px;font-size:.92rem;color:var(--ink)}
+.form textarea{resize:vertical;min-height:40px}
+.form input,.form textarea{font-weight:400}
+.statrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.mock{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.mock .md{font-size:.8rem;color:var(--ink-3);font-weight:600}
+.mock .mn{font-weight:600;font-size:.93rem}
+.mock .mt{font-size:.82rem;color:var(--ink-2);margin-top:2px;white-space:pre-wrap}
+.mock .mb{height:6px;border-radius:99px;background:var(--surface-3);margin-top:6px;overflow:hidden}
+.mock .mb i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.mock .ms{text-align:right;font-variant-numeric:tabular-nums}
+.mock .ms b{font-size:1.05rem}
+.delta{font-size:.75rem;font-weight:700}
+.delta.up{color:var(--ok)} .delta.down{color:var(--bad)}
+.xbtn{border:0;background:none;color:var(--ink-3);cursor:pointer;padding:2px 4px;font-size:.78rem}
+.xbtn:hover{color:var(--bad)}
+
+/* ---------- more ---------- */
+.prose{font-size:.92rem;color:var(--ink-2)}
+.prose ul,.prose ol{margin:0;padding-left:20px}
+.prose li{margin:5px 0}
+.prose b{color:var(--ink)}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.setrow .sl b{display:block;font-size:.93rem}
+.setrow .sl span{font-size:.8rem;color:var(--ink-3)}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* ---------- dialog + toast ---------- */
+dialog{border:0;padding:0;border-radius:18px;width:min(560px,calc(100% - 24px));max-height:calc(100% - 32px);background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(10,10,8,.45)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 8px}
+.dlg-h h2{font-size:1.1rem}
+.dlg-b{padding:4px 18px 18px;display:grid;gap:14px;font-size:.92rem}
+.dlg-b p{margin:0}
+.dlg-f{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;padding:12px 18px 16px;border-top:1px solid var(--line)}
+.prio{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.prio li{display:flex;gap:8px;align-items:flex-start;padding:8px 12px;border-top:1px solid var(--line);font-size:.85rem}
+.prio li:first-child{border-top:0}
+.prio li .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prio li .w{flex:none;color:var(--ink-3);font-size:.78rem}
+.preview{background:var(--accent-soft);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:.88rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;background:var(--ink);color:var(--bg);padding:10px 12px 10px 16px;border-radius:12px;display:flex;gap:14px;align-items:center;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:opacity .2s,transform .2s;font-size:.9rem;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{border:0;background:none;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 6px}
+:root[data-theme="dark"] .toast button{color:#3b5bdb}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .toast button{color:#3b5bdb}}
+footer{max-width:1100px;margin:0 auto;padding:0 16px 32px;color:var(--ink-3);font-size:.78rem}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .planwrap{grid-template-columns:minmax(0,1fr)}
+  .planaside{position:static}
+  .cell{height:34px}
+}
+@media (max-width:860px){
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  .metrics,.statrow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .subjects{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:720px){
+  .tabs{display:none}
+  .top-in{justify-content:space-between}
+  .bottom{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+  .bottom button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:.68rem;font-weight:600;color:var(--ink-3);cursor:pointer;border-radius:10px}
+  .bottom button svg{width:22px;height:22px}
+  .bottom button[aria-current="page"]{color:var(--accent)}
+  main{padding:12px 12px 100px}
+  .toast{bottom:84px}
+  .metrics{gap:8px;margin-bottom:12px}
+  .metric{padding:10px 12px;gap:10px}
+  .metric .mv{font-size:1.15rem}
+  .ring.big{--size:40px;--th:5px}
+  .srow{grid-template-columns:minmax(0,1fr);gap:8px}
+  .form{grid-template-columns:1fr 1fr}
+  .form .name{grid-column:1/-1}
+  .mock{grid-template-columns:minmax(0,1fr) auto}
+  .mock .md{grid-column:1/-1;margin-bottom:-8px}
+  .trow{padding:12px 14px}
+  .search{flex-basis:100%}
+  .banner{flex-wrap:wrap}
+  .banner .ba{width:100%}
+  .banner .ba .btn{width:100%;justify-content:center}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <div>
-    <h1>GATE XE 2027 Tracker</h1>
-    <div class="sub">Engineering Mathematics (XE0) + Materials Science (XE2) + Thermodynamics (XE4) + General Aptitude</div>
-  </div>
-  <div class="toolbar">
-    <label class="sub" for="examDate">Exam date</label>
-    <input type="date" id="examDate" min="2027-02-06" max="2027-02-21" value="2027-02-06">
-    <button id="themeBtn" title="Toggle light/dark">◐</button>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">XE27</div>
+      <div><b>GATE XE 2027</b><small>Maths · Materials · Thermodynamics</small></div>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <button data-view="today">Today</button>
+      <button data-view="plan">Plan</button>
+      <button data-view="syll">Syllabus</button>
+      <button data-view="mocks">Mocks</button>
+      <button data-view="more">Settings &amp; guide</button>
+    </nav>
+    <button class="iconbtn" id="themeBtn" title="Switch light / dark" aria-label="Switch light or dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
   </div>
 </header>
 
-<section class="card stats" aria-label="Progress">
-  <div class="stat"><div class="k">Days to exam</div><div class="v" id="sDays">–</div></div>
-  <div class="stat"><div class="k">Tasks done</div><div class="v" id="sDone">–</div><div class="bar"><i id="sBar"></i></div></div>
-  <div class="stat"><div class="k">Due by today</div><div class="v" id="sDue">–</div></div>
-  <div class="stat"><div class="k">Pace (last 7 days)</div><div class="v" id="sPace">–</div></div>
-</section>
+<main>
+  <section class="metrics" id="metrics" aria-label="Progress summary"></section>
 
-<section class="card status" id="statusCard" aria-live="polite">
-  <h2 id="stTitle">Loading…</h2>
-  <div id="stBody" class="muted"></div>
-  <div id="catchup" class="hidden" style="margin-top:10px">
-    <div class="row">
-      <span>Spread overdue tasks over the next</span>
-      <select id="spread"><option value="3">3 days</option><option value="5" selected>5 days</option><option value="7">7 days</option><option value="10">10 days</option></select>
-      <label class="sub"><input type="checkbox" id="sundaysOnly"> Sundays and review days only</label>
-      <button class="primary" id="planBtn">Make catch-up plan</button>
-      <button id="undoBtn">Undo all catch-up moves</button>
+  <section id="v-today" class="view"></section>
+
+  <section id="v-plan" class="view hidden">
+    <div class="planwrap">
+      <aside class="planaside">
+        <details class="card calbox" id="calBox" open>
+          <summary class="card-h"><h2>Calendar</h2><span class="sub">Tap a day to open it</span></summary>
+          <div class="cal" id="cal"></div>
+          <div class="legend">
+            <span><i class="full"></i>Done</span><span><i class="part"></i>Started</span><span><i></i>Not started</span>
+            <span><i class="over"></i>Overdue</span><span><i class="now"></i>Today</span>
+            <span><i class="dm"></i>Mock</span><span><i class="da"></i>Application</span>
+          </div>
+        </details>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <span class="sr">Search tasks</span><input id="q" type="search" placeholder="Search tasks, e.g. Rankine, XRD, XE2.3" autocomplete="off"></label>
+          <button class="btn" id="jumpToday">Today</button>
+          <button class="btn" id="expandAll">Expand all</button>
+        </div>
+        <div class="toolbar">
+          <div class="secchips" id="secChips" role="group" aria-label="Filter by section"></div>
+        </div>
+        <div class="toolbar"><label class="toggle"><input type="checkbox" id="hideDone"> Hide finished days</label></div>
+        <div id="planList"></div>
+      </div>
     </div>
-    <div id="triage" style="margin-top:10px"></div>
-  </div>
-</section>
+  </section>
 
-<nav class="tabs" role="tablist">
-  <button role="tab" aria-selected="true" data-tab="plan">Day-by-day plan</button>
-  <button role="tab" aria-selected="false" data-tab="syll">Syllabus coverage</button>
-  <button role="tab" aria-selected="false" data-tab="rules">Rules &amp; backup</button>
+  <section id="v-syll" class="view hidden"></section>
+  <section id="v-mocks" class="view hidden"></section>
+
+  <section id="v-more" class="view hidden">
+    <div class="grid2">
+      <div class="stack">
+        <div class="card">
+          <div class="card-h"><h2>Settings</h2></div>
+          <div class="setrow"><div class="sl"><b>Exam date</b><span>Exam window is 6–21 Feb 2027. Set your exact date from the admit card.</span></div>
+            <input type="date" id="examDate" class="field" style="width:auto" min="2027-02-06" max="2027-02-21"></div>
+          <div class="setrow"><div class="sl"><b>Theme</b><span>System follows your device setting</span></div>
+            <div class="seg" id="themeSeg"><button data-t="">System</button><button data-t="light">Light</button><button data-t="dark">Dark</button></div></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Backup &amp; other devices</h2></div>
+          <div class="card-b prose"><p style="margin:0 0 12px">Progress is saved in <b>this browser only</b>. To move it to your phone or laptop, export here and import there. Export once a week as a backup.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn primary" id="exportBtn">Export progress</button>
+              <span class="btn filebtn">Import file<input type="file" id="importFile" accept="application/json,.json" aria-label="Import progress file"></span>
+              <button class="btn danger" id="resetBtn">Reset everything</button>
+            </div>
+            <p id="ioMsg" class="faint" style="margin:10px 0 0"></p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>If you are running behind</h2></div>
+          <div class="card-b prose"><ol>
+            <li><b>1–3 days behind:</b> use the next Sunday review morning. Reschedule over 3–5 days.</li>
+            <li><b>4–7 days behind:</b> reschedule over 7–10 days. In Phase 1, skip lectures for topics you already know well (crystallography, defects, phase diagrams). Do <span class="pill warn">High yield</span> topics first.</li>
+            <li><b>More than a week behind:</b> shorten Phase 2. Halve the topic-wise PYQ days for your strongest section, but keep every full mock.</li>
+            <li><b>Last 10 days before the exam:</b> no new topics. Only formula sheets, PYQs of weak topics, and mocks.</li>
+          </ol></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <div class="card-h"><h2>Rules</h2></div>
+          <div class="card-b prose"><ul>
+            <li><b>Never skip the practice block.</b> Previous-year questions (PYQs) show how deep each topic is examined.</li>
+            <li>Read first, then watch. Only watch lectures for topics you couldn't follow, at 1.5–2× speed.</li>
+            <li>Write one formula page a day. By mid-December you should have one formula sheet per section.</li>
+            <li>When behind, catch up on Sunday morning. <b>Never cut sleep.</b></li>
+            <li>When short of time, cut videos and low-yield reading, <b>never mocks or PYQs</b>.</li>
+            <li>New in the 2027 syllabus: silicon processing, Drude/Debye models, UV-Vis/IR/Raman. Pre-2026 XE-C papers don't cover them.</li>
+          </ul></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Sections</h2></div>
+          <div class="card-b" id="secLegend" style="display:grid;gap:8px"></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Reference codes</h2></div>
+          <div class="card-b prose">C = Callister · Cg = Cengel &amp; Boles · K = Kreyszig · Paul's = Paul's Online Math Notes · Wk = week of the NPTEL course. Full links are in the XE0, XE2 and XE4 study guides.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>18 Nov – 17 Dec follows the 30-day plan; 18 Dec – exam covers PYQs, applications, mocks and revision. Syllabus sections follow the official GATE 2027 XE syllabus (IIT Madras).</footer>
+
+<nav class="bottom" aria-label="Sections">
+  <button data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5l2.2 2.2L15.5 9.5"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg>Today</button>
+  <button data-view="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</button>
+  <button data-view="syll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19"/></svg>Syllabus</button>
+  <button data-view="mocks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg>Mocks</button>
+  <button data-view="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>More</button>
 </nav>
 
-<section id="tab-plan">
-  <div class="filters">
-    <button id="jumpToday" class="primary">Jump to today</button>
-    <label><input type="checkbox" id="hideDone"> Hide finished days</label>
-    <label><input type="checkbox" id="onlyOver"> Only overdue</label>
-    <label>Section
-      <select id="secFilter">
-        <option value="">All</option><option>XE2</option><option>XE4</option><option>XE0</option><option>PR</option><option>GA</option><option>APP</option><option>MOCK</option><option>REV</option>
-      </select>
-    </label>
-  </div>
-  <div id="days"></div>
-</section>
+<dialog id="sheet" aria-labelledby="sheetTitle">
+  <div class="dlg-h"><h2 id="sheetTitle">Reschedule overdue tasks</h2><button class="iconbtn" id="sheetClose" aria-label="Close">✕</button></div>
+  <div class="dlg-b" id="sheetBody"></div>
+  <div class="dlg-f" id="sheetFoot"></div>
+</dialog>
 
-<section id="tab-syll" class="hidden">
-  <p class="muted">Each row is a section of the official GATE 2027 XE syllabus (IIT Madras). <b>Plan %</b> fills automatically as you tick the plan tasks mapped to that section. Tick <b>Confident</b> only once you can solve its previous-year questions without notes.</p>
-  <div id="syll"></div>
-</section>
-
-<section id="tab-rules" class="hidden">
-  <div class="card">
-    <h3 style="margin-top:0">Rules</h3>
-    <ul class="list">
-      <li><b>Never skip the practice block.</b> Previous-year questions (PYQs) show how deep each topic is examined.</li>
-      <li>Read first, then watch: only watch lectures on topics you could not follow, at 1.5–2× speed.</li>
-      <li>Write one formula page per day; by mid-December you should have one formula sheet per section.</li>
-      <li>If you fall behind, catch up on Sunday morning and use the catch-up planner. <b>Never cut sleep.</b></li>
-      <li>If you're short of time, cut videos and low-yield reading, <b>never mock tests or PYQs</b>.</li>
-      <li>Check the 2027 syllabus changes: silicon processing, Drude/Debye models and UV-Vis/IR/Raman are new. Papers from before 2026 (XE-C) do not cover them.</li>
-    </ul>
-  </div>
-  <div class="card">
-    <h3 style="margin-top:0">If you are running behind</h3>
-    <ol class="list">
-      <li><b>Behind by 1–3 days:</b> use the next Sunday review morning and the catch-up planner (spread over 3–5 days).</li>
-      <li><b>Behind by 4–7 days:</b> spread over 7–10 days. In Phase 1, skip lectures for topics you already know (crystallography, defects, phase diagrams are your home ground). Topics tagged <span class="hy">HIGH YIELD</span> come first.</li>
-      <li><b>Behind by more than a week:</b> shorten Phase 2. Cut topic-wise PYQ days for your strongest section to half, but keep every full mock test.</li>
-      <li><b>Last 10 days before the exam:</b> stop new topics. Only formula sheets, PYQs of weak topics and mocks.</li>
-    </ol>
-  </div>
-  <div class="card">
-    <h3 style="margin-top:0">Backup and other devices</h3>
-    <p class="muted">Progress is saved in this browser only. Export it to move it to another device or keep a backup.</p>
-    <div class="row">
-      <button id="exportBtn">Export progress (.json)</button>
-      <label class="row"><input type="file" id="importFile" accept="application/json"></label>
-      <button id="resetBtn">Reset everything</button>
-    </div>
-    <p class="muted" id="ioMsg"></p>
-  </div>
-  <div class="card">
-    <h3 style="margin-top:0">Reference codes</h3>
-    <p class="muted">C = Callister · Cg = Cengel &amp; Boles · K = Kreyszig · Paul's = Paul's Online Math Notes · Wk = week of the NPTEL course. Full links are in the three study guides (XE0, XE2, XE4).</p>
-  </div>
-</section>
-
-<footer>Day plan for 18 Nov – 17 Dec follows the saved 30-day plan; 18 Dec – exam covers PYQs, applications, mocks and revision. Exam window 6–21 Feb 2027; set your exact date from the admit card.</footer>
-</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-(() => {
+(function(){
 'use strict';
-// ---------- storage (wrapped: may be unavailable) ----------
-const KEY = 'gatexe27-v1';
-const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-const S = Object.assign({done:{}, doneAt:{}, moves:{}, conf:{}, exam:'2027-02-06', theme:'', collapsed:{}}, load());
+// ---------- storage (may be unavailable: private mode, blocked site data) ----------
+var KEY = 'gatexe27-v1';
+function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function defaults(){ return {done:{}, doneAt:{}, moves:{}, conf:{}, open:{}, mocks:[], exam:'2027-02-06', theme:'', view:'today', sec:'', hideDone:false}; }
+var S = Object.assign(defaults(), load());
+function migrate(){
+  Object.keys(S.conf || {}).forEach(function(k){ if (S.conf[k] === 1 || S.conf[k] === true) S.conf[k] = 's'; });
+  delete S.collapsed;
+  if (!Array.isArray(S.mocks)) S.mocks = [];
+  if (!S.open || typeof S.open !== 'object') S.open = {};
+}
+migrate();
 
 // ---------- dates ----------
 const iso = d => { const z = new Date(d.getTime() - d.getTimezoneOffset()*60000); return z.toISOString().slice(0,10); };
-const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const parse = s => { const p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); };
 const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate()+n); return iso(d); };
 const diffDays = (a, b) => Math.round((parse(b) - parse(a)) / 86400000);
-const TODAY = iso(new Date());
-const fmt = s => parse(s).toLocaleDateString('en-GB', {weekday:'short', day:'2-digit', month:'short'});
+let TODAY = iso(new Date());
+const fmt = s => parse(s).toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'});
+const fmtShort = s => parse(s).toLocaleDateString('en-GB', {day:'numeric', month:'short'});
+const fmtLong = s => parse(s).toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long'});
+const weekStart = s => addDays(s, -((parse(s).getDay() + 6) % 7));
+const START = '2026-11-18';
 
 // ---------- plan data ----------
 // Phase 1 rows: [date, label, XE2, XE2ref, XE4, XE4ref, XE0, XE0ref, practice, syllabus codes, highYield flags]
@@ -297,36 +576,35 @@ const P2 = [
  ['2027-02-05',[['REV','Rest. Sleep early. No new topics.']]],
 ];
 
-// build tasks
-const days = []; // {date, label, phase, tasks:[{id,sec,text,ref,codes,hy}]}
+// build tasks (IDs = date#index — unchanged from v1 so saved ticks carry over)
+const days = [];
 P1.forEach(r => {
-  const [date,label] = r; const t = [];
+  const date = r[0], label = r[1], t = [];
   if (r.length === 3) {
-    const sec = label === 'MOCK' ? 'MOCK' : 'REV';
-    t.push({sec, text:r[2]});
+    t.push({sec: label === 'MOCK' ? 'MOCK' : 'REV', text:r[2]});
   } else {
     const hy = r[10] || '';
-    t.push({sec:'XE2', text:r[2], ref:r[3], codes:[r[9][0]], hy:hy.includes('2')});
-    t.push({sec:'XE4', text:r[4], ref:r[5], codes:[r[9][1]], hy:hy.includes('4')});
-    t.push({sec:'XE0', text:r[6], ref:r[7], codes:[r[9][2]], hy:hy.includes('0')});
+    t.push({sec:'XE2', text:r[2], ref:r[3], codes:[r[9][0]], hy:hy.indexOf('2') >= 0});
+    t.push({sec:'XE4', text:r[4], ref:r[5], codes:[r[9][1]], hy:hy.indexOf('4') >= 0});
+    t.push({sec:'XE0', text:r[6], ref:r[7], codes:[r[9][2]], hy:hy.indexOf('0') >= 0});
     t.push({sec:'PR', text:'Practice (1 h): '+r[8]+' + one-page formula summary', codes:r[9]});
   }
-  days.push({date, label: label.startsWith('Day') ? label : (label === 'REVIEW' ? 'Weekly review' : 'Full mock'), phase:1, tasks:t});
+  days.push({date, label: label.indexOf('Day') === 0 ? label : (label === 'REVIEW' ? 'Weekly review' : 'Full mock'), tasks:t});
 });
-P2.forEach(([date, list]) => {
-  const t = list.map(([sec,text,codes,hy]) => ({sec, text, codes:codes||[], hy:!!hy}));
-  days.push({date, label: date < '2027-01-18' ? 'PYQs & applications' : 'Mocks & revision', phase: date < '2027-01-18' ? 2 : 3, tasks:t});
+P2.forEach(row => {
+  const date = row[0];
+  const t = row[1].map(x => ({sec:x[0], text:x[1], codes:x[2] || [], hy:!!x[3]}));
+  const hasMock = t.some(x => x.sec === 'MOCK');
+  days.push({date, label: hasMock ? 'Full mock' : (date < '2027-01-18' ? 'PYQs & applications' : 'Revision'), tasks:t});
 });
-// General Aptitude: 20 min daily from 18 Dec to 2 days before exam
 days.forEach(d => { if (d.date >= '2026-12-18' && d.date <= '2027-02-04') d.tasks.push({sec:'GA', text:'General Aptitude: 20 minutes (verbal, numerical, spatial)'}); });
-days.forEach(d => d.tasks.forEach((t,i) => { t.id = d.date + '#' + i; t.base = d.date; }));
-const ALL = days.flatMap(d => d.tasks);
-const byId = Object.fromEntries(ALL.map(t => [t.id, t]));
-const dateOf = t => S.moves[t.id] || t.base;
+days.forEach(d => d.tasks.forEach((t,i) => { t.id = d.date + '#' + i; t.base = d.date; if (!t.codes) t.codes = []; }));
+const ALL = [].concat.apply([], days.map(d => d.tasks));
+const dayInfo = {}; days.forEach(d => { dayInfo[d.date] = d; });
 
-// ---------- syllabus ----------
+// ---------- syllabus (official GATE 2027 XE, IIT Madras) ----------
 const SYL = [
- ['Engineering Mathematics (XE0)', [
+ ['XE0','Engineering Mathematics', [
   ['XE0.1','Linear Algebra','Determinant, inverse, rank; linear systems; eigenvalues/vectors; diagonalization; Cayley–Hamilton'],
   ['XE0.2','Calculus','Single and two variables; maxima/minima; Lagrange multipliers; double integrals; sequences and series'],
   ['XE0.3','Vector Calculus','Gradient, divergence, curl; line integrals; Green\'s theorem'],
@@ -336,7 +614,7 @@ const SYL = [
   ['XE0.7','Probability and Statistics','Axioms; conditional; Bayes; mean/variance; Binomial, Poisson, Normal; correlation and regression'],
   ['XE0.8','Numerical Methods','LU, Gauss elimination; interpolation; bisection, Newton–Raphson; trapezoidal, Simpson; Euler'],
  ]],
- ['Materials Science (XE2)', [
+ ['XE2','Materials Science', [
   ['XE2.1','Classification and Structure','Crystallography, Bravais lattices, Miller indices, CCP/HCP/BCC, carbon, compounds, glasses, solid solutions, polymers, defects'],
   ['XE2.2','Thermodynamics, Kinetics, Phase Transformations','Phase rule, phase diagrams, common tangent, diffusion, nucleation, solidification, TTT/CCT, martensite, glass transition'],
   ['XE2.3','Properties and Applications','Mechanical, electronic (Drude, band theory, semiconductors), magnetic, thermal (Debye), optical'],
@@ -344,7 +622,7 @@ const SYL = [
   ['XE2.5','Processing','Heat treatment of steels and Al alloys; silicon processing; powders and sintering'],
   ['XE2.6','Degradation','Corrosion (Nernst, galvanic series, passivation); polymer degradation'],
  ]],
- ['Thermodynamics (XE4)', [
+ ['XE4','Thermodynamics', [
   ['XE4.1','Basic Concepts','Systems, properties, state postulate, heat and work, zeroth law'],
   ['XE4.2','Properties of Pure Substances','P-v-T, triple and critical points, ideal and real gases, van der Waals'],
   ['XE4.3','First Law','Energy, enthalpy, specific heats; closed systems; SFEE for devices'],
@@ -355,200 +633,538 @@ const SYL = [
   ['XE4.8','Mixtures of Ideal Gases','Dalton, Amagat; air–water vapour; humidity; psychrometric processes'],
  ]],
 ];
+const SYL_NAME = {}; SYL.forEach(s => s[2].forEach(r => { SYL_NAME[r[0]] = r[1]; }));
+
+const SEC = {
+  XE2:['Materials','Materials Science (XE2)'], XE4:['Thermo','Thermodynamics (XE4)'], XE0:['Maths','Engineering Mathematics (XE0)'],
+  PR:['Practice','Practice: PYQs + one-page formula summary'], GA:['Aptitude','General Aptitude, 20 min daily'],
+  APP:['Apply','Applications: ISTA, BARC, NUS'], MOCK:['Mock','Full mock test, 3 hours + analysis'], REV:['Revise','Revision and weak topics']
+};
+const SEC_ORDER = ['XE2','XE4','XE0','PR','GA','APP','MOCK','REV'];
+const PHASES = {1:['Phase 1','Cover the syllabus','18 Nov – 17 Dec'], 2:['Phase 2','PYQs and applications','18 Dec – 17 Jan'], 3:['Phase 3','Mocks and revision','18 Jan – exam']};
+const phaseOf = d => d < '2026-12-18' ? 1 : d < '2027-01-18' ? 2 : 3;
 
 // ---------- helpers ----------
 const $ = s => document.querySelector(s);
-const el = (tag, attrs={}, ...kids) => { const e = document.createElement(tag); for (const [k,v] of Object.entries(attrs)) { if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v); } kids.flat().forEach(k => k != null && e.append(k.nodeType ? k : document.createTextNode(k))); return e; };
-const exam = () => S.exam || '2027-02-06';
-const active = () => ALL.filter(t => dateOf(t) < exam());
-
-// ---------- render: plan ----------
-function renderPlan(){
-  const host = $('#days'); host.innerHTML = '';
-  const hideDone = $('#hideDone').checked, onlyOver = $('#onlyOver').checked, sec = $('#secFilter').value;
-  // group by effective date
-  const groups = {};
-  active().forEach(t => { const k = dateOf(t); (groups[k] = groups[k] || []).push(t); });
-  const labels = Object.fromEntries(days.map(d => [d.date, d]));
-  let lastPhase = 0;
-  Object.keys(groups).sort().forEach(date => {
-    let tasks = groups[date].slice().sort((a,b) => (a.base === date) === (b.base === date) ? 0 : (a.base === date ? -1 : 1));
-    if (sec) tasks = tasks.filter(t => t.sec === sec);
-    if (!tasks.length) return;
-    const allDone = tasks.every(t => S.done[t.id]);
-    const over = date < TODAY && !allDone;
-    if (hideDone && allDone) return;
-    if (onlyOver && !over) return;
-    const info = labels[date] || {label:'Catch-up', phase: date < '2026-12-18' ? 1 : date < '2027-01-18' ? 2 : 3};
-    if (info.phase !== lastPhase) {
-      lastPhase = info.phase;
-      host.append(el('div', {class:'phase'}, ['', 'Phase 1 · Cover the syllabus (18 Nov – 17 Dec)', 'Phase 2 · PYQs and applications (18 Dec – 17 Jan)', 'Phase 3 · Mock tests and revision (18 Jan – exam)'][info.phase]));
-    }
-    const n = tasks.filter(t => S.done[t.id]).length;
-    const box = el('div', {class:'day' + (date === TODAY ? ' today' : '') + (over ? ' overdue' : '') + (S.collapsed[date] ? ' collapsed' : ''), id:'d-'+date});
-    const head = el('div', {class:'dh', role:'button', tabindex:'0', 'aria-expanded': String(!S.collapsed[date]), onclick:() => toggle(date), onkeydown:e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(date); } }},
-      el('span', {}, el('span', {class:'d'}, fmt(date)), ' ', el('span', {class:'muted'}, '· ' + info.label + (date === TODAY ? ' · TODAY' : ''))),
-      el('span', {class:'meta'}, `${n}/${tasks.length}` + (over ? ' · overdue' : '')));
-    const ul = el('ul');
-    tasks.forEach(t => {
-      const cb = el('input', {type:'checkbox', id:'c-'+t.id, 'aria-label': t.text});
-      cb.checked = !!S.done[t.id];
-      cb.addEventListener('change', () => { if (cb.checked) { S.done[t.id] = 1; S.doneAt[t.id] = TODAY; } else { delete S.done[t.id]; delete S.doneAt[t.id]; } save(); renderAll(false); });
-      const lab = el('label', {for:'c-'+t.id, class:'txt'}, t.text,
-        t.hy ? el('span', {class:'hy'}, 'HIGH YIELD') : null,
-        t.base !== date ? el('span', {class:'moved'}, '↪ moved from ' + fmt(t.base)) : null,
-        t.ref ? el('span', {class:'ref'}, t.ref) : null);
-      ul.append(el('li', {class: S.done[t.id] ? 'done' : ''}, cb, el('span', {class:'tag t-'+t.sec}, t.sec), lab));
-    });
-    box.append(head, ul); host.append(box);
+function el(tag, attrs){
+  const e = document.createElement(tag);
+  attrs = attrs || {};
+  Object.keys(attrs).forEach(k => {
+    const v = attrs[k];
+    if (k === 'class') e.className = v;
+    else if (k === 'html') e.innerHTML = v;
+    else if (k.indexOf('on') === 0) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
   });
-  if (!host.children.length) host.append(el('p', {class:'muted'}, 'Nothing to show with these filters.'));
+  for (let i = 2; i < arguments.length; i++) add(e, arguments[i]);
+  return e;
 }
-function toggle(date){ S.collapsed[date] = !S.collapsed[date]; if (!S.collapsed[date]) delete S.collapsed[date]; save(); renderPlan(); }
+function add(e, k){ if (k == null || k === false) return; if (Array.isArray(k)) k.forEach(x => add(e, x)); else e.append(k.nodeType ? k : document.createTextNode(String(k))); }
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+const exam = () => S.exam || '2027-02-06';
+const dateOf = t => S.moves[t.id] || t.base;
+const active = () => ALL.filter(t => dateOf(t) < exam());
+const chip = s => el('span', {class:'chip c-'+s, title:SEC[s][1]}, SEC[s][0]);
+const ring = (n, total, cls) => el('span', {class:'ring' + (cls ? ' '+cls : ''), style:'--p:' + (total ? Math.round(100*n/total) : 0), 'aria-hidden':'true'});
+const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+const prio = t => t.sec === 'APP' ? 0 : t.sec === 'MOCK' ? 1 : t.hy ? 2 : t.sec === 'PR' ? 3 : 4;
+function groupByDate(list){ const g = {}; list.forEach(t => { const k = dateOf(t); (g[k] = g[k] || []).push(t); }); return g; }
+function dayTasks(date){ return active().filter(t => dateOf(t) === date).sort((a,b) => (a.base === date ? 0 : 1) - (b.base === date ? 0 : 1)); }
+function trunc(s, n){ return s.length > n ? s.slice(0, n-1) + '…' : s; }
 
-// ---------- render: stats + status ----------
-function renderStats(){
+// ---------- computed status ----------
+function calc(){
   const act = active();
   const done = act.filter(t => S.done[t.id]).length;
-  const due = act.filter(t => dateOf(t) <= TODAY);
   const dueOpen = act.filter(t => dateOf(t) < TODAY && !S.done[t.id]);
-  const days2 = diffDays(TODAY, exam());
-  $('#sDays').textContent = days2 >= 0 ? days2 : 'done';
-  $('#sDone').textContent = `${done} / ${act.length}`;
-  $('#sBar').style.width = (act.length ? 100*done/act.length : 0) + '%';
-  $('#sDue').textContent = `${due.filter(t => S.done[t.id]).length} / ${due.length}`;
-  const weekAgo = addDays(TODAY, -6);
-  const recent = Object.values(S.doneAt).filter(d => d >= weekAgo && d <= TODAY).length;
-  const pace = recent / 7;
-  $('#sPace').textContent = pace.toFixed(1) + ' / day';
-
-  // status
-  const card = $('#statusCard'); card.classList.remove('behind','far');
   const remaining = act.length - done;
-  const daysLeft = Math.max(diffDays(TODAY, exam()), 1);
-  const need = remaining / daysLeft;
-  // how many plan days of work are overdue
-  const overdueDays = new Set(dueOpen.map(dateOf)).size;
-  const avgPerDay = act.length / Math.max(new Set(act.map(dateOf)).size, 1);
-  const behindDays = dueOpen.length / avgPerDay;
-  let proj = '';
-  if (pace > 0) { const fin = addDays(TODAY, Math.ceil(remaining / pace)); proj = ` At your 7-day pace (${pace.toFixed(1)} tasks/day) you would finish on <b>${fmt(fin)}</b>${fin > exam() ? ' — <b>after</b> the exam' : ''}.`; }
-  if (TODAY < '2026-11-18') {
-    $('#stTitle').textContent = 'Plan starts 18 Nov 2026';
-    $('#stBody').innerHTML = 'Nothing is due yet.';
-    $('#catchup').classList.add('hidden');
-  } else if (!dueOpen.length) {
-    $('#stTitle').textContent = '✓ On track';
-    $('#stBody').innerHTML = `Everything due before today is done. ${remaining} tasks left; you need about <b>${need.toFixed(1)} tasks/day</b> to finish before the exam.` + proj;
-    $('#catchup').classList.add('hidden');
-  } else {
-    card.classList.add(behindDays > 4 ? 'far' : 'behind');
-    const bySec = {}; dueOpen.forEach(t => bySec[t.sec] = (bySec[t.sec]||0) + 1);
-    const secTxt = Object.entries(bySec).map(([k,v]) => `${k}: ${v}`).join(' · ');
-    $('#stTitle').textContent = `Behind by ${dueOpen.length} task${dueOpen.length>1?'s':''} (≈ ${behindDays.toFixed(1)} plan days)`;
-    $('#stBody').innerHTML = `Overdue tasks from ${overdueDays} day${overdueDays>1?'s':''} (${secTxt}). You now need about <b>${need.toFixed(1)} tasks/day</b> to finish before the exam.` + proj;
-    $('#catchup').classList.remove('hidden');
-    renderTriage(dueOpen, behindDays);
-  }
+  const daysToExam = diffDays(TODAY, exam());
+  const need = remaining / Math.max(daysToExam, 1);
+  const weekAgo = addDays(TODAY, -6);
+  const recent = Object.keys(S.doneAt).filter(k => S.done[k] && S.doneAt[k] >= weekAgo && S.doneAt[k] <= TODAY).length;
+  const pace = recent / 7;
+  // plan days behind = sum over past days of (open tasks / tasks that day)
+  const perDay = {}; act.forEach(t => { const d = dateOf(t); perDay[d] = (perDay[d] || 0) + 1; });
+  const overDates = {}; dueOpen.forEach(t => { const d = dateOf(t); overDates[d] = (overDates[d] || 0) + 1; });
+  const behindDays = Object.keys(overDates).reduce((a, d) => a + overDates[d] / perDay[d], 0);
+  const fin = pace > 0 ? addDays(TODAY, Math.ceil(remaining / pace)) : null;
+  const sev = !dueOpen.length ? 'ok' : behindDays > 4 ? 'bad' : 'warn';
+  return {act, done, dueOpen, remaining, daysToExam, need, pace, behindDays, overdueDays:Object.keys(overDates).length, fin, sev};
 }
 
-function renderTriage(open, behindDays){
-  const t = $('#triage'); t.innerHTML = '';
-  const hy = open.filter(x => x.hy || x.sec === 'PR' || x.sec === 'MOCK' || x.sec === 'APP');
-  const advice = behindDays <= 3 ? 'Use the next Sunday review morning and spread over 3–5 days.'
-    : behindDays <= 7 ? 'Spread over 7–10 days. Skip lectures for topics you already know; do HIGH YIELD, practice, mocks and applications first.'
-    : 'More than a week behind: spread over 10 days and plan to halve the Phase 2 topic-wise PYQ days for your strongest section. Never drop mocks.';
-  t.append(el('p', {class:'muted', style:'margin:0 0 6px'}, advice));
-  if (hy.length) {
-    t.append(el('div', {}, el('b', {}, 'Do these overdue tasks first:')));
-    const ul = el('ul', {class:'list'});
-    hy.slice(0, 8).forEach(x => ul.append(el('li', {}, el('span', {class:'tag t-'+x.sec, style:'margin-right:6px'}, x.sec), x.text.length > 110 ? x.text.slice(0,110)+'…' : x.text, el('span', {class:'muted'}, ' (' + fmt(x.base) + ')'))));
-    t.append(ul);
+// ---------- toggling ----------
+function setDone(id, v){ if (v) { S.done[id] = 1; S.doneAt[id] = TODAY; } else { delete S.done[id]; delete S.doneAt[id]; } save(); }
+function dayComplete(date){ const ts = dayTasks(date); return ts.length > 0 && ts.every(t => S.done[t.id]); }
+function onToggle(t, checked){
+  const date = dateOf(t), was = dayComplete(date);
+  setDone(t.id, checked);
+  refresh();
+  if (checked) {
+    const msg = !was && dayComplete(date) ? (date === TODAY ? 'Today is complete. Well done.' : fmt(date) + ' is complete.') : 'Marked done';
+    toast(msg, () => { setDone(t.id, false); refresh(); });
   }
 }
-
-// catch-up planner: move overdue unchecked tasks to the next N days (optionally only review/sunday days)
-function makePlan(){
-  const open = active().filter(t => dateOf(t) < TODAY && !S.done[t.id]);
-  if (!open.length) return;
-  // priority order: applications/mocks/high-yield/practice first, then the rest, oldest first
-  const pr = t => (t.sec === 'APP' ? 0 : t.sec === 'MOCK' ? 1 : t.hy ? 2 : t.sec === 'PR' ? 3 : 4);
-  open.sort((a,b) => pr(a) - pr(b) || a.base.localeCompare(b.base));
-  const n = +$('#spread').value, sundays = $('#sundaysOnly').checked;
-  let slots = [];
-  for (let i = 0; slots.length < n && i < 60; i++) {
-    const d = addDays(TODAY, i);
-    if (d >= exam()) break;
-    if (!sundays || parse(d).getDay() === 0) slots.push(d);
-  }
-  if (!slots.length) slots = [TODAY];
-  open.forEach((t, i) => { S.moves[t.id] = slots[i % slots.length]; });
-  save(); renderAll(true);
-  $('#stBody').insertAdjacentHTML('beforeend', `<br><b>Moved ${open.length} task(s) onto ${slots.length} day(s) starting ${fmt(slots[0])}.</b> They are marked “↪ moved from”.`);
+function taskRow(t, opts){
+  opts = opts || {};
+  const id = 'cb-' + t.id.replace('#','-') + (opts.ctx || '');
+  const cb = el('input', {type:'checkbox', class:'sr', id});
+  cb.checked = !!S.done[t.id];
+  cb.addEventListener('change', () => onToggle(t, cb.checked));
+  const box = el('span', {class:'box', 'aria-hidden':'true', html:CHECK});
+  const d = dateOf(t);
+  const refBits = [t.ref, t.codes.length ? t.codes.join(', ') : null].filter(Boolean).join(' · ');
+  return el('li', {class:'task' + (S.done[t.id] ? ' done' : '')},
+    el('label', {for:id, class:'trow'}, cb, box,
+      el('span', {class:'tbody'},
+        el('span', {class:'tmeta'}, chip(t.sec),
+          t.hy ? el('span', {class:'pill warn'}, 'High yield') : null,
+          t.base !== d ? el('span', {class:'pill accent'}, 'Moved from ' + fmtShort(t.base)) : null,
+          opts.showDate ? el('span', {class:'faint', style:'font-size:.78rem'}, 'planned ' + fmt(t.base)) : null),
+        el('span', {class:'ttext'}, t.text),
+        refBits ? el('span', {class:'tref'}, refBits) : null)));
 }
-function undoMoves(){ S.moves = {}; save(); renderAll(true); }
 
-// ---------- render: syllabus ----------
-function renderSyll(){
-  const host = $('#syll'); host.innerHTML = '';
-  SYL.forEach(([title, secs]) => {
-    const wrap = el('div', {class:'card sec'}, el('h3', {style:'margin-top:0'}, title));
-    secs.forEach(([code, name, desc]) => {
-      const ts = ALL.filter(t => (t.codes||[]).includes(code));
-      const d = ts.filter(t => S.done[t.id]).length;
-      const pct = ts.length ? Math.round(100*d/ts.length) : 0;
-      const cb = el('input', {type:'checkbox', id:'s-'+code});
-      cb.checked = !!S.conf[code];
-      cb.addEventListener('change', () => { if (cb.checked) S.conf[code] = 1; else delete S.conf[code]; save(); });
-      wrap.append(el('div', {class:'srow'},
-        el('div', {}, el('div', {class:'n'}, code + ' · ' + name), el('div', {class:'desc'}, desc)),
-        el('div', {}, el('div', {class:'muted', style:'font-size:.8rem'}, `Plan ${pct}% (${d}/${ts.length})`), el('div', {class:'bar'}, el('i', {style:`width:${pct}%`}))),
-        el('label', {for:'s-'+code}, cb, 'Confident')));
+// ---------- metrics ----------
+function renderMetrics(){
+  const c = calc(), host = $('#metrics'); host.innerHTML = '';
+  const pct = c.act.length ? Math.round(100*c.done/c.act.length) : 0;
+  const examTxt = c.daysToExam > 0 ? c.daysToExam + (c.daysToExam === 1 ? ' day' : ' days') : c.daysToExam === 0 ? 'Today' : 'Done';
+  host.append(
+    el('button', {class:'metric', type:'button', title:'Change exam date', onclick:() => setView('more')},
+      el('div', {style:'min-width:0'}, el('div', {class:'mk'}, 'Exam in'), el('div', {class:'mv'}, examTxt), el('div', {class:'ms'}, fmt(exam())))),
+    el('div', {class:'metric'}, el('span', {class:'ring big', style:'--p:'+pct}, el('span', {}, pct + '%')),
+      el('div', {style:'min-width:0'}, el('div', {class:'mk'}, 'Overall'), el('div', {class:'mv'}, c.done + '/' + c.act.length), el('div', {class:'ms'}, 'tasks done'))),
+    TODAY < START
+      ? el('div', {class:'metric'}, el('div', {}, el('div', {class:'mk'}, 'Status'), el('div', {class:'mv'}, 'Not started'), el('div', {class:'ms'}, 'Plan begins ' + fmt(START))))
+      : el(c.sev === 'ok' ? 'div' : 'button', {class:'metric ' + c.sev, type: c.sev === 'ok' ? null : 'button', onclick: c.sev === 'ok' ? null : openSheet},
+          el('div', {style:'min-width:0'}, el('div', {class:'mk'}, 'Status'),
+            el('div', {class:'mv'}, c.sev === 'ok' ? 'On track' : c.dueOpen.length + ' overdue'),
+            el('div', {class:'ms'}, c.sev === 'ok' ? 'Nothing overdue' : '≈ ' + c.behindDays.toFixed(1) + ' days behind · fix'))),
+    el('div', {class:'metric ' + (c.pace >= c.need || c.pace === 0 && c.remaining === 0 ? 'ok' : c.pace > 0 ? 'warn' : '')},
+      el('div', {style:'min-width:0'}, el('div', {class:'mk'}, 'Pace · last 7 days'), el('div', {class:'mv'}, c.pace.toFixed(1) + '/day'), el('div', {class:'ms'}, 'Need ' + c.need.toFixed(1) + '/day to finish')))
+  );
+}
+
+// ---------- today ----------
+function banner(c){
+  if (TODAY < START) return el('div', {class:'banner ok'}, el('div', {class:'bi'}, '→'), el('div', {class:'bx'}, el('h2', {}, 'The plan starts on ' + fmtLong(START)), el('p', {}, 'Nothing is due yet. Have a look at the Plan tab to see what is coming.')));
+  if (c.daysToExam < 0) return el('div', {class:'banner ok'}, el('div', {class:'bi'}, '✓'), el('div', {class:'bx'}, el('h2', {}, 'The exam date has passed'), el('p', {}, 'Change the exam date in Settings if it is later than ' + fmt(exam()) + '.')));
+  const proj = c.fin ? ' At your current pace you finish on ' + fmt(c.fin) + (c.fin >= exam() ? ', which is after the exam.' : '.') : '';
+  if (c.sev === 'ok') return el('div', {class:'banner ok'}, el('div', {class:'bi'}, '✓'), el('div', {class:'bx'},
+    el('h2', {}, 'You are on track'),
+    el('p', {}, 'Everything before today is done. ' + c.remaining + ' tasks left; about ' + c.need.toFixed(1) + ' a day gets you to the exam.' + proj)));
+  const by = {}; c.dueOpen.forEach(t => { by[t.sec] = (by[t.sec] || 0) + 1; });
+  const parts = SEC_ORDER.filter(s => by[s]).map(s => by[s] + ' ' + SEC[s][0]);
+  return el('div', {class:'banner ' + c.sev}, el('div', {class:'bi'}, '!'),
+    el('div', {class:'bx'},
+      el('h2', {}, plural(c.dueOpen.length, 'task') + ' overdue (≈ ' + c.behindDays.toFixed(1) + ' plan days)'),
+      el('p', {}, parts.join(' · ') + '. You now need about ' + c.need.toFixed(1) + ' tasks a day.' + proj)),
+    el('div', {class:'ba'}, el('button', {class:'btn primary', type:'button', onclick:openSheet}, 'Fix my schedule')));
+}
+
+function renderToday(){
+  const host = $('#v-today'); host.innerHTML = '';
+  const c = calc();
+  const left = el('div', {class:'stack'}), right = el('div', {class:'stack'});
+  host.append(el('div', {class:'stack'}, banner(c), el('div', {class:'grid2'}, left, right)));
+
+  // today's card
+  const focus = TODAY < START ? START : TODAY;
+  const ts = dayTasks(focus);
+  const n = ts.filter(t => S.done[t.id]).length;
+  const info = dayInfo[focus];
+  const card = el('section', {class:'card'});
+  card.append(el('div', {class:'today-h'},
+    el('div', {class:'dt'},
+      el('div', {class:'eyebrow'}, focus === TODAY ? 'Today' : 'First day'),
+      el('h2', {}, fmtLong(focus)),
+      el('div', {class:'faint', style:'font-size:.85rem'}, (info ? info.label : 'Catch-up day') + ' · ' + PHASES[phaseOf(focus)][0] + ': ' + PHASES[phaseOf(focus)][1])),
+    ts.length ? el('div', {style:'text-align:right;min-width:90px'}, el('div', {class:'num', style:'font-weight:700;font-size:1.1rem'}, n + ' / ' + ts.length), el('div', {class:'bar', style:'margin-top:6px'}, el('i', {style:'width:' + Math.round(100*n/ts.length) + '%'}))) : null));
+  if (!ts.length) card.append(el('p', {class:'empty'}, c.daysToExam <= 0 ? 'No tasks: exam day or later.' : 'Nothing scheduled for today.'));
+  else {
+    const ul = el('ul', {class:'tasks'}); ts.forEach(t => ul.append(taskRow(t, {ctx:'-td'}))); card.append(ul);
+    if (n === ts.length) card.append(el('p', {class:'alldone'}, '✓ All done for today. Rest, or pull something from tomorrow.'));
+  }
+  left.append(card);
+
+  // overdue
+  if (c.dueOpen.length) {
+    const od = el('section', {class:'card'});
+    od.append(el('div', {class:'card-h'}, el('div', {}, el('h2', {}, 'Overdue'), el('div', {class:'sub'}, plural(c.dueOpen.length, 'task') + ' from ' + plural(c.overdueDays, 'day'))),
+      el('button', {class:'btn sm', type:'button', onclick:openSheet}, 'Reschedule…')));
+    const g = groupByDate(c.dueOpen);
+    Object.keys(g).sort().forEach(d => {
+      od.append(el('div', {class:'grp'}, fmt(d) + (dayInfo[d] ? ' · ' + dayInfo[d].label : '')));
+      const ul = el('ul', {class:'tasks'});
+      g[d].sort((a,b) => prio(a) - prio(b)).forEach(t => ul.append(taskRow(t, {ctx:'-od'})));
+      od.append(ul);
     });
-    host.append(wrap);
+    left.append(od);
+  }
+
+  // coming up
+  const up = el('section', {class:'card'}, el('div', {class:'card-h'}, el('h2', {}, 'Coming up')));
+  const g = groupByDate(active());
+  const next = Object.keys(g).filter(d => d > focus).sort().slice(0, 3);
+  if (!next.length) up.append(el('p', {class:'empty'}, 'Nothing after today.'));
+  else {
+    const ul = el('ul', {class:'mini'});
+    next.forEach(d => {
+      const list = g[d].filter(t => t.sec !== 'GA');
+      ul.append(el('li', {}, el('span', {class:'when'}, d === addDays(TODAY,1) ? 'Tomorrow' : fmt(d)),
+        el('span', {class:'what'}, el('div', {class:'tmeta', style:'margin-bottom:3px'}, (dayInfo[d] ? [el('b', {style:'font-size:.82rem'}, dayInfo[d].label)] : []).concat(list.slice(0,4).map(t => chip(t.sec)))),
+          el('span', {class:'t faint'}, list.map(t => t.sec === 'PR' ? null : trunc(t.text, 60)).filter(Boolean).join(' · ')))));
+    });
+    up.append(ul);
+  }
+  right.append(up);
+
+  // deadlines
+  const dl = el('section', {class:'card'}, el('div', {class:'card-h'}, el('h2', {}, 'Deadlines & mocks')));
+  const keys = active().filter(t => (t.sec === 'APP' || t.sec === 'MOCK') && !S.done[t.id] && dateOf(t) >= TODAY).sort((a,b) => dateOf(a).localeCompare(dateOf(b))).slice(0, 5);
+  const ul2 = el('ul', {class:'mini'});
+  keys.forEach(t => {
+    const dd = diffDays(TODAY, dateOf(t));
+    ul2.append(el('li', {}, el('span', {class:'when'}, dd === 0 ? 'Today' : dd === 1 ? 'Tomorrow' : 'in ' + dd + ' d'),
+      el('span', {class:'what'}, el('div', {style:'margin-bottom:3px'}, chip(t.sec)), el('span', {class:'t'}, trunc(t.text, 90)))));
+  });
+  if (c.daysToExam >= 0) ul2.append(el('li', {}, el('span', {class:'when', style:'color:var(--bad)'}, c.daysToExam === 0 ? 'Today' : 'in ' + c.daysToExam + ' d'), el('span', {class:'what'}, el('b', {}, 'GATE XE exam'), el('span', {class:'t faint'}, fmtLong(exam())))));
+  dl.append(ul2); right.append(dl);
+
+  // weak topics
+  const weak = Object.keys(S.conf).filter(k => S.conf[k] === 'w' && SYL_NAME[k]).sort();
+  const wk = el('section', {class:'card'}, el('div', {class:'card-h'}, el('h2', {}, 'Weak topics'), el('button', {class:'btn link sm', type:'button', onclick:() => setView('syll')}, 'Edit')));
+  if (!weak.length) wk.append(el('p', {class:'empty'}, 'Mark sections as Weak on the Syllabus tab and they will be listed here for revision days.'));
+  else { const ul = el('ul', {class:'mini'}); weak.forEach(k => ul.append(el('li', {}, el('span', {class:'when'}, k), el('span', {class:'what'}, SYL_NAME[k])))); wk.append(ul); }
+  right.append(wk);
+}
+
+// ---------- plan ----------
+let planQ = '';
+function renderCal(){
+  const host = $('#cal'); host.innerHTML = '';
+  ['M','T','W','T','F','S','S'].forEach(d => host.append(el('div', {class:'dow'}, d)));
+  const g = groupByDate(active());
+  const first = weekStart(START);
+  const last = addDays(weekStart(exam()), 6);
+  for (let d = first; d <= last; d = addDays(d, 1)) {
+    const ts = g[d] || [];
+    const day = parse(d).getDate();
+    const mlab = (d === first || day === 1) ? el('span', {class:'m'}, parse(d).toLocaleDateString('en-GB', {month:'short'})) : null;
+    if (d === exam()) { host.append(el('div', {class:'cell exam', title:'Exam: ' + fmtLong(d), style:'display:grid;place-items:center'}, 'EXAM')); continue; }
+    if (!ts.length) { host.append(el('div', {class:'cell blank', style:'display:grid;place-items:center'}, mlab, day)); continue; }
+    const n = ts.filter(t => S.done[t.id]).length;
+    let cls = 'cell' + (n === ts.length ? ' full' : n ? ' part' : '');
+    if (d < TODAY && n < ts.length) cls += ' over';
+    if (d === TODAY) cls += ' now';
+    const hasMock = ts.some(t => t.sec === 'MOCK'), hasApp = ts.some(t => t.sec === 'APP');
+    host.append(el('button', {class:cls, type:'button', 'aria-label': fmt(d) + ': ' + n + ' of ' + ts.length + ' done', title: fmt(d) + ' · ' + n + '/' + ts.length, onclick:() => openDay(d)},
+      mlab, day, hasApp ? el('span', {class:'dot app'}) : hasMock ? el('span', {class:'dot'}) : null));
+  }
+}
+function openDay(d){
+  S.open[d] = true;
+  if (S.sec || S.hideDone || planQ) { S.sec = ''; S.hideDone = false; planQ = ''; $('#q').value = ''; $('#hideDone').checked = false; renderSecChips(); }
+  save(); renderPlanList();
+  const node = document.getElementById('d-' + d);
+  if (node) { node.scrollIntoView({behavior:'smooth', block:'start'}); node.classList.remove('flash'); void node.offsetWidth; node.classList.add('flash'); }
+}
+function renderSecChips(){
+  const host = $('#secChips'); host.innerHTML = '';
+  [['', 'All']].concat(SEC_ORDER.map(s => [s, SEC[s][0]])).forEach(p => {
+    host.append(el('button', {type:'button', 'aria-pressed': String(S.sec === p[0]), title: p[0] ? SEC[p[0]][1] : 'Show all sections', onclick:() => { S.sec = p[0]; save(); renderSecChips(); renderPlanList(); }}, p[1]));
   });
 }
+function renderPlanList(){
+  const host = $('#planList'); host.innerHTML = '';
+  const q = planQ.trim().toLowerCase(), sec = S.sec, filtered = !!(q || sec);
+  const g = groupByDate(active());
+  const phaseTot = {1:[0,0],2:[0,0],3:[0,0]};
+  active().forEach(t => { const p = phaseTot[phaseOf(dateOf(t))]; p[1]++; if (S.done[t.id]) p[0]++; });
+  let curPhase = 0, curWeek = '', shown = 0;
+  Object.keys(g).sort().forEach(date => {
+    let tasks = g[date].slice().sort((a,b) => (a.base === date ? 0 : 1) - (b.base === date ? 0 : 1));
+    if (sec) tasks = tasks.filter(t => t.sec === sec);
+    if (q) tasks = tasks.filter(t => (t.text + ' ' + (t.ref || '') + ' ' + t.codes.join(' ') + ' ' + t.codes.map(c => SYL_NAME[c] || '').join(' ') + ' ' + SEC[t.sec][1]).toLowerCase().indexOf(q) >= 0);
+    if (!tasks.length) return;
+    const n = tasks.filter(t => S.done[t.id]).length, allDone = n === tasks.length;
+    if (S.hideDone && allDone) return;
+    const ph = phaseOf(date);
+    if (ph !== curPhase) {
+      curPhase = ph; curWeek = '';
+      const pt = phaseTot[ph];
+      host.append(el('div', {class:'phaseh'}, el('div', {}, el('div', {class:'eyebrow'}, PHASES[ph][0] + ' · ' + PHASES[ph][2]), el('h2', {}, PHASES[ph][1])), el('span', {class:'pr'}, pt[0] + '/' + pt[1] + ' done')));
+    }
+    const wk = weekStart(date);
+    if (wk !== curWeek) { curWeek = wk; host.append(el('div', {class:'week'}, 'Week of ' + fmtShort(wk))); }
+    host.append(dayCard(date, tasks, n, filtered));
+    shown++;
+  });
+  if (!shown) host.append(el('div', {class:'card', style:'padding:18px'}, el('p', {class:'muted', style:'margin:0'}, q ? 'No tasks match “' + planQ + '”.' : 'Nothing to show with these filters.')));
+}
+function dayCard(date, tasks, n, forceOpen){
+  const info = dayInfo[date];
+  const allDone = n === tasks.length, over = date < TODAY && !allDone, isToday = date === TODAY;
+  const open = forceOpen || (S.open[date] !== undefined ? S.open[date] : (!allDone && date <= addDays(TODAY, 6)));
+  const card = el('article', {class:'day' + (isToday ? ' now' : '') + (allDone ? ' complete' : '') + (open ? ' open' : ''), id:'d-' + date});
+  const d = parse(date);
+  const secs = []; tasks.forEach(t => { if (secs.indexOf(t.sec) < 0) secs.push(t.sec); });
+  const head = el('button', {class:'dhead', type:'button', 'aria-expanded': String(open)},
+    el('div', {class:'dnum'}, el('span', {}, d.toLocaleDateString('en-GB', {weekday:'short'})), el('b', {}, d.getDate()), el('span', {}, d.toLocaleDateString('en-GB', {month:'short'}))),
+    el('div', {class:'dtitle'},
+      el('div', {class:'dl'}, info ? info.label : 'Catch-up day',
+        isToday ? el('span', {class:'pill accent'}, 'Today') : null,
+        over ? el('span', {class:'pill warn'}, 'Overdue') : null,
+        allDone ? el('span', {class:'pill ok'}, 'Done') : null),
+      el('div', {class:'dchips'}, secs.map(chip))),
+    el('div', {class:'dprog'}, ring(n, tasks.length), el('span', {}, n + '/' + tasks.length)));
+  head.insertAdjacentHTML('beforeend', CHEV);
+  head.addEventListener('click', () => {
+    const now = !card.classList.contains('open');
+    card.classList.toggle('open', now); head.setAttribute('aria-expanded', String(now));
+    S.open[date] = now; save();
+  });
+  const ul = el('ul', {class:'tasks'}); tasks.forEach(t => ul.append(taskRow(t, {ctx:'-pl'})));
+  card.append(head, ul);
+  return card;
+}
+function renderPlan(){ renderCal(); renderPlanList(); }
 
-function renderAll(full){ renderStats(); renderPlan(); if (full !== false || !$('#tab-syll').classList.contains('hidden')) renderSyll(); }
+// ---------- syllabus ----------
+function renderSyll(){
+  const host = $('#v-syll'); host.innerHTML = '';
+  const stats = code => { const ts = ALL.filter(t => t.codes.indexOf(code) >= 0); const d = ts.filter(t => S.done[t.id]).length; return [d, ts.length]; };
+  const top = el('div', {class:'subjects'});
+  SYL.forEach(s => {
+    let d = 0, tot = 0; const cnt = {w:0, o:0, s:0};
+    s[2].forEach(r => { const x = stats(r[0]); d += x[0]; tot += x[1]; if (S.conf[r[0]]) cnt[S.conf[r[0]]]++; });
+    const pct = tot ? Math.round(100*d/tot) : 0;
+    top.append(el('div', {class:'card subj'}, el('span', {class:'ring big', style:'--p:' + pct + ';--fill:var(--c-' + s[0].toLowerCase() + ')'}, el('span', {}, pct + '%')),
+      el('div', {style:'min-width:0'}, el('div', {class:'eyebrow'}, s[0]), el('h3', {}, s[1]),
+        el('div', {class:'cnt'}, el('span', {class:'pill ok'}, cnt.s + ' strong'), el('span', {class:'pill warn'}, cnt.o + ' OK'), el('span', {class:'pill bad'}, cnt.w + ' weak'),
+          el('span', {class:'pill', style:'background:var(--surface-2);color:var(--ink-3)'}, (s[2].length - cnt.s - cnt.o - cnt.w) + ' unrated')))));
+  });
+  host.append(top, el('p', {class:'note'}, 'The bar fills as you tick plan tasks for that section. Rate yourself honestly after doing its previous-year questions: Strong only if you can solve them without notes. Weak sections show up on the Today tab.'));
+  const wrap = el('div', {class:'stack'});
+  SYL.forEach(s => {
+    const card = el('section', {class:'card'}, el('div', {class:'card-h'}, el('h2', {}, s[1] + ' (' + s[0] + ')')));
+    s[2].forEach(r => {
+      const code = r[0], x = stats(code), pct = x[1] ? Math.round(100*x[0]/x[1]) : 0;
+      const seg = el('div', {class:'seg sm', role:'group', 'aria-label':'Confidence: ' + r[1]});
+      [['w','Weak'],['o','OK'],['s','Strong']].forEach(p => seg.append(el('button', {type:'button', class:'lv-' + p[0], 'aria-pressed': String(S.conf[code] === p[0]),
+        onclick:() => { if (S.conf[code] === p[0]) delete S.conf[code]; else S.conf[code] = p[0]; save(); renderSyll(); }}, p[1])));
+      card.append(el('div', {class:'srow'},
+        el('div', {}, el('div', {class:'n'}, el('code', {}, code), r[1]), el('div', {class:'d'}, r[2])),
+        el('div', {}, el('div', {class:'p'}, 'Plan ' + pct + '% · ' + x[0] + '/' + x[1]), el('div', {class:'bar'}, el('i', {style:'width:' + pct + '%;background:var(--c-' + s[0].toLowerCase() + ')'}))),
+        seg));
+    });
+    wrap.append(card);
+  });
+  host.append(wrap);
+}
 
-// ---------- events ----------
-$('#examDate').value = exam();
-$('#examDate').addEventListener('change', e => { if (e.target.value) { S.exam = e.target.value; save(); renderAll(true); } });
-['#hideDone','#onlyOver','#secFilter'].forEach(s => $(s).addEventListener('change', renderPlan));
-$('#planBtn').addEventListener('click', makePlan);
-$('#undoBtn').addEventListener('click', undoMoves);
-$('#jumpToday').addEventListener('click', () => {
-  const target = document.getElementById('d-'+TODAY) || [...document.querySelectorAll('.day')].find(d => d.id.slice(2) >= TODAY);
-  if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+// ---------- mocks ----------
+function renderMocks(){
+  const host = $('#v-mocks'); host.innerHTML = '';
+  const mocks = S.mocks.slice().sort((a,b) => a.date.localeCompare(b.date) || a.id - b.id);
+  const pctOf = m => m.max ? 100 * m.score / m.max : 0;
+  // form
+  const f = {date: el('input', {type:'date', value:TODAY, required:true}), name: el('input', {type:'text', placeholder:'e.g. Past paper XE 2025, Test series #3', maxlength:80}),
+    score: el('input', {type:'number', step:'0.01', min:'0', placeholder:'58.33', required:true}), max: el('input', {type:'number', step:'0.01', min:'1', value:'100'}),
+    notes: el('textarea', {rows:2, placeholder:'Where did you lose marks? (topics, silly mistakes, time)', maxlength:500})};
+  const form = el('form', {class:'form'},
+    el('label', {}, 'Date', f.date), el('label', {class:'name'}, 'Test', f.name), el('label', {}, 'Score', f.score), el('label', {}, 'Out of', f.max),
+    el('label', {class:'wide'}, 'Notes', f.notes),
+    el('div', {class:'wide'}, el('button', {class:'btn primary', type:'submit'}, 'Add score')));
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const sc = parseFloat(f.score.value), mx = parseFloat(f.max.value) || 100;
+    if (!f.date.value || isNaN(sc)) return;
+    S.mocks.push({id: Date.now(), date: f.date.value, name: f.name.value.trim() || 'Mock test', score: sc, max: mx, notes: f.notes.value.trim()});
+    save(); renderMocks(); toast('Score saved');
+  });
+  const planned = active().filter(t => t.sec === 'MOCK'), pd = planned.filter(t => S.done[t.id]).length;
+  host.append(el('section', {class:'card'}, el('div', {class:'card-h'}, el('div', {}, el('h2', {}, 'Log a mock score'), el('div', {class:'sub'}, 'Your plan has ' + planned.length + ' full mocks · ' + pd + ' ticked so far'))), el('div', {class:'card-b'}, form)));
+  // stats
+  if (mocks.length) {
+    const ps = mocks.map(pctOf), last3 = ps.slice(-3), avg3 = last3.reduce((a,b) => a+b, 0) / last3.length;
+    const best = Math.max.apply(null, ps), lastV = ps[ps.length-1], prevV = ps.length > 1 ? ps[ps.length-2] : null;
+    const tile = (k, v, s, cls) => el('div', {class:'metric ' + (cls || '')}, el('div', {}, el('div', {class:'mk'}, k), el('div', {class:'mv'}, v), el('div', {class:'ms'}, s)));
+    host.append(el('div', {class:'statrow'},
+      tile('Tests logged', mocks.length, 'since ' + fmtShort(mocks[0].date)),
+      tile('Latest', lastV.toFixed(1) + '%', prevV == null ? 'first test' : (lastV >= prevV ? '▲ ' : '▼ ') + Math.abs(lastV - prevV).toFixed(1) + ' vs previous', prevV == null ? '' : lastV >= prevV ? 'ok' : 'bad'),
+      tile('Average of last 3', avg3.toFixed(1) + '%', 'smooths out one bad day'),
+      tile('Best', best.toFixed(1) + '%', '')));
+  }
+  // list
+  const list = el('section', {class:'card'}, el('div', {class:'card-h'}, el('h2', {}, 'All scores')));
+  if (!mocks.length) list.append(el('p', {class:'empty'}, 'No scores yet. After each mock, log the marks and where you lost them. The trend matters more than any single score.'));
+  mocks.slice().reverse().forEach((m, i, arr) => {
+    const p = pctOf(m), prev = arr[i+1] ? pctOf(arr[i+1]) : null;
+    list.append(el('div', {class:'mock'},
+      el('div', {class:'md'}, fmt(m.date)),
+      el('div', {style:'min-width:0'}, el('div', {class:'mn'}, m.name), m.notes ? el('div', {class:'mt'}, m.notes) : null, el('div', {class:'mb'}, el('i', {style:'width:' + Math.max(0, Math.min(100, p)) + '%'}))),
+      el('div', {class:'ms'}, el('b', {}, (+m.score.toFixed(2)) + '/' + (+m.max.toFixed(2))), el('div', {class:'faint', style:'font-size:.78rem'}, p.toFixed(1) + '%'),
+        prev != null ? el('div', {class:'delta ' + (p >= prev ? 'up' : 'down')}, (p >= prev ? '▲ ' : '▼ ') + Math.abs(p - prev).toFixed(1)) : null,
+        el('button', {class:'xbtn', type:'button', 'aria-label':'Delete ' + m.name, onclick:() => {
+          const idx = S.mocks.indexOf(m); if (idx < 0) return; S.mocks.splice(idx, 1); save(); renderMocks();
+          toast('Score deleted', () => { S.mocks.push(m); save(); renderMocks(); }); }}, 'Delete'))));
+  });
+  host.append(list);
+}
+
+// ---------- more ----------
+function renderMore(){
+  $('#examDate').value = exam();
+  document.querySelectorAll('#themeSeg button').forEach(b => b.setAttribute('aria-pressed', String((S.theme || '') === b.dataset.t)));
+  const lg = $('#secLegend');
+  if (!lg.children.length) SEC_ORDER.forEach(s => lg.append(el('div', {style:'display:flex;gap:10px;align-items:center;font-size:.88rem'}, el('span', {style:'width:84px;flex:none'}, chip(s)), el('span', {class:'muted'}, SEC[s][1]))));
+}
+
+// ---------- reschedule sheet ----------
+function slotsFor(n, sundays){
+  const slots = [];
+  for (let i = 0; slots.length < n && i < 70; i++) { const d = addDays(TODAY, i); if (d >= exam()) break; if (!sundays || parse(d).getDay() === 0) slots.push(d); }
+  return slots.length ? slots : [TODAY];
+}
+function openSheet(){
+  const c = calc(), body = $('#sheetBody'), foot = $('#sheetFoot');
+  body.innerHTML = ''; foot.innerHTML = '';
+  const moved = Object.keys(S.moves).length;
+  const undoBtn = moved ? el('button', {class:'btn', type:'button', onclick:() => { const keep = S.moves; S.moves = {}; save(); closeSheet(); refresh(); toast('All reschedules undone', () => { S.moves = keep; save(); refresh(); }); }}, 'Undo all ' + moved + ' moves') : null;
+  if (!c.dueOpen.length) {
+    body.append(el('p', {}, 'Nothing is overdue. You are on track.'));
+    foot.append(undoBtn, el('button', {class:'btn primary', type:'button', onclick:closeSheet}, 'Close'));
+    showSheet(); return;
+  }
+  const b = c.behindDays;
+  const advice = b <= 3 ? 'Small gap. Use the next Sunday review morning, and spread the rest over 3–5 days.'
+    : b <= 7 ? 'Spread over 7–10 days. Skip lectures for topics you already know; do high-yield topics, practice, mocks and applications first.'
+    : 'More than a week behind. Spread over 10 days and plan to halve the Phase 2 topic-wise PYQ days for your strongest section. Never drop mocks.';
+  body.append(el('p', {}, el('b', {}, plural(c.dueOpen.length, 'task') + ' from ' + plural(c.overdueDays, 'day')), ' are overdue (≈ ' + b.toFixed(1) + ' plan days).'), el('p', {class:'muted'}, advice));
+  const first = c.dueOpen.slice().sort((x,y) => prio(x) - prio(y) || x.base.localeCompare(y.base)).filter(t => prio(t) <= 3).slice(0, 6);
+  if (first.length) {
+    const ul = el('ul', {class:'prio'});
+    first.forEach(t => ul.append(el('li', {}, chip(t.sec), el('span', {class:'t', title:t.text}, t.text), el('span', {class:'w'}, fmtShort(t.base)))));
+    body.append(el('div', {}, el('div', {class:'eyebrow', style:'margin-bottom:6px'}, 'These go first'), ul));
+  }
+  let n = b <= 1.5 ? 3 : b <= 4 ? 5 : b <= 7 ? 7 : 10, sundays = false;
+  const seg = el('div', {class:'seg', role:'group', 'aria-label':'Spread over'});
+  const sun = el('input', {type:'checkbox'});
+  const preview = el('div', {class:'preview'});
+  function upd(){
+    seg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.n === n)));
+    const s = slotsFor(n, sundays), per = Math.ceil(c.dueOpen.length / s.length);
+    const base = s.length ? (active().filter(t => s.indexOf(dateOf(t)) >= 0).length / s.length) : 0;
+    preview.textContent = 'Adds about ' + per + ' task' + (per === 1 ? '' : 's') + ' a day on ' + (s.length === 1 ? fmt(s[0]) : fmt(s[0]) + ' – ' + fmt(s[s.length-1]) + ' (' + s.length + ' days)') + ', on top of about ' + Math.round(base) + ' already planned. High-priority tasks land on the earliest days.';
+  }
+  [3,5,7,10].forEach(k => seg.append(el('button', {type:'button', 'data-n':k, onclick:() => { n = k; upd(); }}, k + ' days')));
+  sun.addEventListener('change', () => { sundays = sun.checked; upd(); });
+  body.append(el('div', {}, el('div', {class:'eyebrow', style:'margin-bottom:6px'}, 'Spread over the next'), seg),
+    el('label', {class:'toggle'}, sun, 'Sundays only (review days)'), preview);
+  upd();
+  foot.append(undoBtn, el('button', {class:'btn', type:'button', onclick:closeSheet}, 'Cancel'),
+    el('button', {class:'btn primary', type:'button', onclick:() => {
+      const keep = Object.assign({}, S.moves), s = slotsFor(n, sundays);
+      const open = c.dueOpen.slice().sort((x,y) => prio(x) - prio(y) || x.base.localeCompare(y.base));
+      open.forEach((t, i) => { S.moves[t.id] = s[Math.floor(i * s.length / open.length)]; });
+      save(); closeSheet(); refresh();
+      toast('Moved ' + plural(open.length, 'task') + ' onto ' + plural(s.length, 'day'), () => { S.moves = keep; save(); refresh(); });
+    }}, 'Reschedule'));
+  showSheet();
+}
+function showSheet(){ const d = $('#sheet'); if (d.showModal) { if (!d.open) d.showModal(); } else d.setAttribute('open', ''); }
+function closeSheet(){ const d = $('#sheet'); if (d.close) d.close(); else d.removeAttribute('open'); }
+
+// ---------- toast ----------
+let toastTimer = null;
+function hideToast(){ $('#toast').classList.remove('show'); }
+function toast(msg, undo){
+  const t = $('#toast'); t.innerHTML = '';
+  t.append(el('span', {}, msg));
+  if (undo) t.append(el('button', {type:'button', onclick:() => { undo(); hideToast(); }}, 'Undo'));
+  t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(hideToast, 4500);
+}
+
+// ---------- views ----------
+const VIEWS = ['today','plan','syll','mocks','more'];
+function renderView(){
+  if (S.view === 'today') renderToday();
+  else if (S.view === 'plan') renderPlan();
+  else if (S.view === 'syll') renderSyll();
+  else if (S.view === 'mocks') renderMocks();
+  else renderMore();
+}
+function refresh(){ renderMetrics(); renderView(); }
+function setView(v){
+  if (VIEWS.indexOf(v) < 0) v = 'today';
+  const changed = S.view !== v;
+  S.view = v; save();
+  try { if (location.hash !== '#' + v) history.replaceState(null, '', '#' + v); } catch (e) {}
+  VIEWS.forEach(x => $('#v-' + x).classList.toggle('hidden', x !== v));
+  document.querySelectorAll('[data-view]').forEach(b => { if (b.dataset.view === v) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+  $('#metrics').classList.toggle('hidden', v === 'more' || v === 'mocks');
+  refresh();
+  if (changed) window.scrollTo(0, 0);
+  if (v === 'plan' && changed) setTimeout(() => { const n = document.getElementById('d-' + TODAY); if (n) n.scrollIntoView({block:'start'}); }, 0);
+}
+
+// ---------- theme ----------
+function applyTheme(){ if (S.theme) document.documentElement.setAttribute('data-theme', S.theme); else document.documentElement.removeAttribute('data-theme'); }
+function isDark(){ return S.theme ? S.theme === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); }
+
+// ---------- wire up ----------
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+$('#themeBtn').addEventListener('click', () => { S.theme = isDark() ? 'light' : 'dark'; save(); applyTheme(); if (S.view === 'more') renderMore(); });
+document.querySelectorAll('#themeSeg button').forEach(b => b.addEventListener('click', () => { S.theme = b.dataset.t; save(); applyTheme(); renderMore(); }));
+$('#examDate').addEventListener('change', e => { const v = e.target.value; if (v && v >= '2027-02-06' && v <= '2027-02-21') { S.exam = v; save(); renderMetrics(); toast('Exam date set to ' + fmt(v)); } });
+$('#q').addEventListener('input', e => { planQ = e.target.value; renderPlanList(); });
+$('#hideDone').checked = !!S.hideDone;
+$('#hideDone').addEventListener('change', e => { S.hideDone = e.target.checked; save(); renderPlanList(); });
+$('#jumpToday').addEventListener('click', () => openDay(TODAY < START ? START : TODAY));
+$('#expandAll').addEventListener('click', () => {
+  const cards = document.querySelectorAll('#planList .day'), anyClosed = [].some.call(cards, c => !c.classList.contains('open'));
+  [].forEach.call(cards, c => { c.classList.toggle('open', anyClosed); S.open[c.id.slice(2)] = anyClosed; });
+  $('#expandAll').textContent = anyClosed ? 'Collapse all' : 'Expand all'; save();
 });
-document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
-  ['plan','syll','rules'].forEach(t => $('#tab-'+t).classList.toggle('hidden', t !== b.dataset.tab));
-  if (b.dataset.tab === 'syll') renderSyll();
-}));
-// theme
-const applyTheme = () => { if (S.theme) document.documentElement.setAttribute('data-theme', S.theme); else document.documentElement.removeAttribute('data-theme'); };
-$('#themeBtn').addEventListener('click', () => {
-  const dark = S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  S.theme = dark ? 'light' : 'dark'; save(); applyTheme();
-});
-applyTheme();
-// export / import / reset
+$('#sheetClose').addEventListener('click', closeSheet);
+$('#sheet').addEventListener('click', e => { if (e.target === e.currentTarget) closeSheet(); });
 $('#exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(S, null, 1)], {type:'application/json'});
-  const a = el('a', {href: URL.createObjectURL(blob), download: `gate-xe-progress-${TODAY}.json`}); document.body.append(a); a.click(); a.remove();
+  const a = el('a', {href: URL.createObjectURL(blob), download: 'gate-xe-progress-' + TODAY + '.json'});
+  document.body.append(a); a.click(); a.remove();
+  $('#ioMsg').textContent = 'Exported. Keep the file somewhere safe (Drive, email to yourself).';
 });
-$('#importFile').addEventListener('change', async e => {
-  const f = e.target.files[0]; if (!f) return;
-  try { const data = JSON.parse(await f.text()); if (!data || typeof data.done !== 'object') throw 0; Object.keys(S).forEach(k => delete S[k]); Object.assign(S, {done:{},doneAt:{},moves:{},conf:{},collapsed:{}}, data); save(); $('#examDate').value = exam(); applyTheme(); renderAll(true); $('#ioMsg').textContent = 'Progress imported.'; }
-  catch (err) { $('#ioMsg').textContent = 'That file is not a valid progress export.'; }
+$('#importFile').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const data = JSON.parse(r.result);
+      if (!data || typeof data.done !== 'object') throw new Error('bad');
+      Object.keys(S).forEach(k => delete S[k]); Object.assign(S, defaults(), data); migrate(); save();
+      applyTheme(); $('#hideDone').checked = !!S.hideDone; renderSecChips(); setView('more');
+      $('#ioMsg').textContent = 'Imported ' + Object.keys(S.done).length + ' ticked tasks.';
+    } catch (err) { $('#ioMsg').textContent = 'That file is not a valid progress export.'; }
+    e.target.value = '';
+  };
+  r.readAsText(file);
 });
 $('#resetBtn').addEventListener('click', () => {
-  if (!confirm('Erase all ticks, catch-up moves and settings on this device?')) return;
-  Object.keys(S).forEach(k => delete S[k]); Object.assign(S, {done:{},doneAt:{},moves:{},conf:{},exam:'2027-02-06',theme:'',collapsed:{}}); save(); $('#examDate').value = exam(); applyTheme(); renderAll(true); $('#ioMsg').textContent = 'Reset done.';
+  if (!confirm('Erase all ticks, reschedules, ratings, mock scores and settings on this device? Export first if unsure.')) return;
+  Object.keys(S).forEach(k => delete S[k]); Object.assign(S, defaults(), {view:'more'}); save();
+  applyTheme(); $('#hideDone').checked = false; renderSecChips(); setView('more');
+  $('#ioMsg').textContent = 'Everything was reset.';
 });
+// re-check the date when the tab comes back (page left open overnight)
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { const t = iso(new Date()); if (t !== TODAY) { TODAY = t; refresh(); } } });
 
-renderAll(true);
+applyTheme();
+if (window.matchMedia && matchMedia('(max-width:960px)').matches) $('#calBox').removeAttribute('open');
+renderSecChips();
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (VIEWS.indexOf(h) >= 0 && h !== S.view) setView(h); });
+setView(VIEWS.indexOf(location.hash.slice(1)) >= 0 ? location.hash.slice(1) : S.view);
 })();
 </script>
 </body>
