@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GATE XE 2027 Tracker</title>
+<meta name="description" content="Day-by-day GATE XE 2027 plan (Engineering Mathematics, Materials Science, Thermodynamics) with checkboxes, syllabus coverage and a catch-up planner.">
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --surface-2:#efede7; --ink:#1d1c1a; --ink-2:#55524c; --line:#dcd8cf;
+  --accent:#2f5d8a; --accent-ink:#ffffff; --ok:#2e7d4f; --warn:#b26b00; --bad:#b3261e;
+  --xe2:#7a4fb5; --xe4:#c0562b; --xe0:#2f7d8a; --pr:#5b6b2f; --ga:#8a6d2f; --app:#a33a6e; --mock:#1d1c1a;
+  --radius:10px; --shadow:0 1px 2px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151513; --surface:#1f1f1c; --surface-2:#2a2a26; --ink:#ecebe6; --ink-2:#a9a69e; --line:#3a3934;
+    --accent:#7fb0e0; --accent-ink:#0f1a24; --ok:#6cc790; --warn:#e5a54a; --bad:#ef7a72;
+    --xe2:#b393e6; --xe4:#ee8c63; --xe0:#6cc3cf; --pr:#a8bb6c; --ga:#d4b56e; --app:#e07aaa; --mock:#ecebe6;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151513; --surface:#1f1f1c; --surface-2:#2a2a26; --ink:#ecebe6; --ink-2:#a9a69e; --line:#3a3934;
+  --accent:#7fb0e0; --accent-ink:#0f1a24; --ok:#6cc790; --warn:#e5a54a; --bad:#ef7a72;
+  --xe2:#b393e6; --xe4:#ee8c63; --xe0:#6cc3cf; --pr:#a8bb6c; --ga:#d4b56e; --app:#e07aaa; --mock:#ecebe6;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+header{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between;margin:8px 0 12px}
+h1{font-size:1.4rem;margin:0;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:.9rem}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,select,input[type=date]{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;margin:12px 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat .k{color:var(--ink-2);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-size:1.35rem;font-weight:650;font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;background:var(--accent);width:0}
+.status{border-left:4px solid var(--ok)}
+.status.behind{border-left-color:var(--warn)}
+.status.far{border-left-color:var(--bad)}
+.status h2{margin:0 0 4px;font-size:1.05rem}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-top:16px;overflow-x:auto}
+.tabs button{border:none;border-bottom:2px solid transparent;border-radius:0;background:none;padding:8px 12px;color:var(--ink-2);white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.filters label{font-size:.9rem;color:var(--ink-2);display:flex;gap:6px;align-items:center}
+.phase{margin:22px 0 6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:10px 0;overflow:hidden}
+.day.today{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+.day.overdue .dh .d{color:var(--warn)}
+.dh{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;background:var(--surface-2);cursor:pointer;user-select:none}
+.dh .d{font-weight:650}
+.dh .meta{color:var(--ink-2);font-size:.85rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.day ul{list-style:none;margin:0;padding:4px 0}
+.day li{display:flex;gap:10px;align-items:flex-start;padding:7px 14px;border-top:1px solid var(--line)}
+.day li:first-child{border-top:none}
+.day li input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--accent)}
+.day li.done .txt{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--line)}
+.tag{flex:none;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 6px;border-radius:5px;color:#fff;margin-top:2px;min-width:44px;text-align:center}
+.t-XE2{background:var(--xe2)}.t-XE4{background:var(--xe4)}.t-XE0{background:var(--xe0)}.t-PR{background:var(--pr)}.t-GA{background:var(--ga)}.t-APP{background:var(--app)}.t-MOCK{background:var(--mock);color:var(--bg)}.t-REV{background:var(--accent);color:var(--accent-ink)}
+.txt{flex:1;min-width:0}
+.ref{display:block;color:var(--ink-2);font-size:.82rem}
+.hy{font-size:.68rem;font-weight:700;color:var(--warn);border:1px solid var(--warn);border-radius:4px;padding:0 4px;margin-left:6px;white-space:nowrap}
+.moved{font-size:.68rem;color:var(--accent);margin-left:6px;white-space:nowrap}
+.collapsed ul{display:none}
+.sec{margin:10px 0}
+.sec h3{font-size:1rem;margin:16px 0 6px}
+.srow{display:grid;grid-template-columns:1fr 120px 90px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.srow .n{font-weight:600}
+.srow .desc{color:var(--ink-2);font-size:.83rem}
+.srow label{font-size:.85rem;display:flex;gap:6px;align-items:center;justify-content:flex-end}
+.muted{color:var(--ink-2)}
+.list{margin:6px 0 0;padding-left:18px}
+.list li{margin:3px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hidden{display:none!important}
+footer{color:var(--ink-2);font-size:.8rem;margin:28px 0 12px}
+@media (max-width:600px){
+  .srow{grid-template-columns:1fr;gap:4px}
+  .srow label{justify-content:flex-start}
+  .dh .meta{font-size:.78rem}
+  h1{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>GATE XE 2027 Tracker</h1>
+    <div class="sub">Engineering Mathematics (XE0) + Materials Science (XE2) + Thermodynamics (XE4) + General Aptitude</div>
+  </div>
+  <div class="toolbar">
+    <label class="sub" for="examDate">Exam date</label>
+    <input type="date" id="examDate" min="2027-02-06" max="2027-02-21" value="2027-02-06">
+    <button id="themeBtn" title="Toggle light/dark">◐</button>
+  </div>
+</header>
+
+<section class="card stats" aria-label="Progress">
+  <div class="stat"><div class="k">Days to exam</div><div class="v" id="sDays">–</div></div>
+  <div class="stat"><div class="k">Tasks done</div><div class="v" id="sDone">–</div><div class="bar"><i id="sBar"></i></div></div>
+  <div class="stat"><div class="k">Due by today</div><div class="v" id="sDue">–</div></div>
+  <div class="stat"><div class="k">Pace (last 7 days)</div><div class="v" id="sPace">–</div></div>
+</section>
+
+<section class="card status" id="statusCard" aria-live="polite">
+  <h2 id="stTitle">Loading…</h2>
+  <div id="stBody" class="muted"></div>
+  <div id="catchup" class="hidden" style="margin-top:10px">
+    <div class="row">
+      <span>Spread overdue tasks over the next</span>
+      <select id="spread"><option value="3">3 days</option><option value="5" selected>5 days</option><option value="7">7 days</option><option value="10">10 days</option></select>
+      <label class="sub"><input type="checkbox" id="sundaysOnly"> Sundays and review days only</label>
+      <button class="primary" id="planBtn">Make catch-up plan</button>
+      <button id="undoBtn">Undo all catch-up moves</button>
+    </div>
+    <div id="triage" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-tab="plan">Day-by-day plan</button>
+  <button role="tab" aria-selected="false" data-tab="syll">Syllabus coverage</button>
+  <button role="tab" aria-selected="false" data-tab="rules">Rules &amp; backup</button>
+</nav>
+
+<section id="tab-plan">
+  <div class="filters">
+    <button id="jumpToday" class="primary">Jump to today</button>
+    <label><input type="checkbox" id="hideDone"> Hide finished days</label>
+    <label><input type="checkbox" id="onlyOver"> Only overdue</label>
+    <label>Section
+      <select id="secFilter">
+        <option value="">All</option><option>XE2</option><option>XE4</option><option>XE0</option><option>PR</option><option>GA</option><option>APP</option><option>MOCK</option><option>REV</option>
+      </select>
+    </label>
+  </div>
+  <div id="days"></div>
+</section>
+
+<section id="tab-syll" class="hidden">
+  <p class="muted">Each row is a section of the official GATE 2027 XE syllabus (IIT Madras). <b>Plan %</b> fills automatically as you tick the plan tasks mapped to that section. Tick <b>Confident</b> only once you can solve its previous-year questions without notes.</p>
+  <div id="syll"></div>
+</section>
+
+<section id="tab-rules" class="hidden">
+  <div class="card">
+    <h3 style="margin-top:0">Rules</h3>
+    <ul class="list">
+      <li><b>Never skip the practice block.</b> Previous-year questions (PYQs) show how deep each topic is examined.</li>
+      <li>Read first, then watch: only watch lectures on topics you could not follow, at 1.5–2× speed.</li>
+      <li>Write one formula page per day; by mid-December you should have one formula sheet per section.</li>
+      <li>If you fall behind, catch up on Sunday morning and use the catch-up planner. <b>Never cut sleep.</b></li>
+      <li>If you're short of time, cut videos and low-yield reading, <b>never mock tests or PYQs</b>.</li>
+      <li>Check the 2027 syllabus changes: silicon processing, Drude/Debye models and UV-Vis/IR/Raman are new. Papers from before 2026 (XE-C) do not cover them.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">If you are running behind</h3>
+    <ol class="list">
+      <li><b>Behind by 1–3 days:</b> use the next Sunday review morning and the catch-up planner (spread over 3–5 days).</li>
+      <li><b>Behind by 4–7 days:</b> spread over 7–10 days. In Phase 1, skip lectures for topics you already know (crystallography, defects, phase diagrams are your home ground). Topics tagged <span class="hy">HIGH YIELD</span> come first.</li>
+      <li><b>Behind by more than a week:</b> shorten Phase 2. Cut topic-wise PYQ days for your strongest section to half, but keep every full mock test.</li>
+      <li><b>Last 10 days before the exam:</b> stop new topics. Only formula sheets, PYQs of weak topics and mocks.</li>
+    </ol>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Backup and other devices</h3>
+    <p class="muted">Progress is saved in this browser only. Export it to move it to another device or keep a backup.</p>
+    <div class="row">
+      <button id="exportBtn">Export progress (.json)</button>
+      <label class="row"><input type="file" id="importFile" accept="application/json"></label>
+      <button id="resetBtn">Reset everything</button>
+    </div>
+    <p class="muted" id="ioMsg"></p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Reference codes</h3>
+    <p class="muted">C = Callister · Cg = Cengel &amp; Boles · K = Kreyszig · Paul's = Paul's Online Math Notes · Wk = week of the NPTEL course. Full links are in the three study guides (XE0, XE2, XE4).</p>
+  </div>
+</section>
+
+<footer>Day plan for 18 Nov – 17 Dec follows the saved 30-day plan; 18 Dec – exam covers PYQs, applications, mocks and revision. Exam window 6–21 Feb 2027; set your exact date from the admit card.</footer>
+</div>
+
+<script>
+(() => {
+'use strict';
+// ---------- storage (wrapped: may be unavailable) ----------
+const KEY = 'gatexe27-v1';
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const S = Object.assign({done:{}, doneAt:{}, moves:{}, conf:{}, exam:'2027-02-06', theme:'', collapsed:{}}, load());
+
+// ---------- dates ----------
+const iso = d => { const z = new Date(d.getTime() - d.getTimezoneOffset()*60000); return z.toISOString().slice(0,10); };
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate()+n); return iso(d); };
+const diffDays = (a, b) => Math.round((parse(b) - parse(a)) / 86400000);
+const TODAY = iso(new Date());
+const fmt = s => parse(s).toLocaleDateString('en-GB', {weekday:'short', day:'2-digit', month:'short'});
+
+// ---------- plan data ----------
+// Phase 1 rows: [date, label, XE2, XE2ref, XE4, XE4ref, XE0, XE0ref, practice, syllabus codes, highYield flags]
+const P1 = [
+ ['2026-11-18','Day 1','Classification of materials; crystal = lattice + motif; symmetry; 7 crystal systems; 14 Bravais lattices; unit cells','C Ch.1, 3 · Prasad · Anandh','Basic concepts: continuum, systems, properties, state postulate, equilibrium, processes','Cg Ch.1 · Kale Wk 1','Matrices: determinant, inverse, rank','K Ch.7 · Strang 18.06','Bravais lattice and matrix-rank PYQs',['XE2.1','XE4.1','XE0.1'],''],
+ ['2026-11-19','Day 2',"Miller and Miller–Bravais indices; CCP, HCP, BCC; stacking; tetrahedral and octahedral voids; packing fraction and density",'C Ch.3 · Anandh','Heat and work; modes of work (boundary, shaft, spring, electrical, flow); zeroth law; temperature','Cg Ch.1–2, 4 · Kale Wk 1','Linear systems: unique, no, or infinitely many solutions','K Ch.7 · EM-I Wk 8','Indices and density numericals; boundary work',['XE2.1','XE4.1','XE0.1'],'2'],
+ ['2026-11-20','Day 3',"Carbon structures (diamond, graphite, graphene, fullerene, CNT); NaCl, CsCl, ZnS, perovskite, spinel; Pauling's rules; silica and glasses; solid solutions, Hume-Rothery rules",'C Ch.4, 12–13 · Anandh','Pure substances: phases, P–v–T, P–v/T–v/P–T diagrams, triple and critical points, quality, steam tables','Cg Ch.3 · Kale Wk 5 · LearnChemE','Eigenvalues and eigenvectors; symmetric matrices; diagonalization; Cayley–Hamilton','K Ch.8 · EM-I Wk 10 · 3Blue1Brown','Steam-table look-ups; eigenvalue PYQs',['XE2.1','XE4.2','XE0.1'],'40'],
+ ['2026-11-21','Day 4','Polymer structure: addition vs condensation, degree of polymerization, configuration vs conformation, tacticity, crystallinity, copolymers, PE/PP/PVC/PTFE/PS, cross-linking, rubber','C Ch.14 · Dhara','Ideal gas equation; compressibility factor; van der Waals equation','Cg Ch.3 · Kale Wk 5',"Limits, L'Hospital's rule, continuity, differentiability, mean value theorems",'Paul\'s Calc I · EM-I Wk 1','Polymerization-degree numericals; MVT PYQs',['XE2.1','XE4.2','XE0.2'],''],
+ ['2026-11-22','REVIEW','Revise Days 1–4 (crystallography, polymers, pure substances, matrices). Timed 3-hour set of XE PYQs on these topics; mark every mistake; update formula sheets.'],
+ ['2026-11-23','Day 5','Point defects (vacancy, interstitial, Frenkel, Schottky; equilibrium concentration); dislocations: edge, screw, mixed; Burgers vector and circuit','C Ch.4 · Shekhar Defects I · Hull & Bacon','First law: forms of energy, internal energy, enthalpy, specific heats','Cg Ch.2, 4 · Kale Wk 2',"Maxima and minima; Taylor's theorem",'Paul\'s Calc I · EM-I Wk 1, 4','Vacancy-concentration numericals',['XE2.1','XE4.3','XE0.2'],'4'],
+ ['2026-11-24','Day 6','Stable Burgers vectors in SC/BCC/FCC; nodes; line energy; glide and climb; free surfaces, grain and twin boundaries, stacking faults; surface energy (bond-breaking model)','C Ch.4, 7 · Shekhar Defects II','Closed-system processes: isochoric, isobaric, isothermal, polytropic, adiabatic','Cg Ch.4 · Kale Wk 2–3','Fundamental theorem of calculus; mean value theorem for integrals; definite and improper integrals','Paul\'s Calc II · EM-I Wk 5','Polytropic-process numericals; improper integrals',['XE2.1','XE4.3','XE0.2'],'4'],
+ ['2026-11-25','Day 7','Thermodynamic properties and laws; phase rule; unary P–T diagrams; G–x curves and common tangent construction','Porter Ch.1 · Bhattacharya','Control volumes: mass and energy balance; SFEE for nozzles, diffusers, turbines, compressors, pumps','Cg Ch.5 · Kale Wk 3, 7','Areas and volumes of revolution','Paul\'s Calc I · Mahato Wk 5–6','Phase-rule PYQs; turbine and nozzle numericals',['XE2.2','XE4.3','XE0.2'],'24'],
+ ['2026-11-26','Day 8','Binary phase diagrams: isomorphous, eutectic, peritectic, eutectoid; lever rule; Fe–C diagram','C Ch.9 · Biswas PD','SFEE: throttling valves, heat exchangers, mixing chambers; mixed first-law PYQs','Cg Ch.5','Two variables: limits, continuity, partial derivatives, directional and total derivatives','Paul\'s Calc III · EM-I Wk 2–3','Lever-rule numericals; first-law PYQs',['XE2.2','XE4.3','XE0.2'],'24'],
+ ['2026-11-27','Day 9',"Reaction kinetics, order, Arrhenius law; diffusion: Fick's laws, steady and non-steady solutions, √(Dt), atomic mechanisms, fast diffusion paths",'C Ch.5 · Porter Ch.2 · Bhattacharya','Second law: heat engines, refrigerators, heat pumps; efficiency and COP; Kelvin–Planck and Clausius statements','Cg Ch.6 · Kale Wk 4','Maxima, minima, saddle points; Lagrange multipliers','Paul\'s Calc III · EM-I Wk 4','Diffusion (erf) numericals; COP problems',['XE2.2','XE4.4','XE0.2'],'24'],
+ ['2026-11-28','Day 10','Solidification: homogeneous and heterogeneous nucleation, critical radius, nucleation rate, growth, solute partitioning','Porter Ch.4 · Bhadeshia PT','Reversible and irreversible processes; Carnot cycle and principles; thermodynamic temperature scale','Cg Ch.6 · Laws Wk 3','Double integrals: change of order, polar coordinates, applications','Paul\'s Calc III · EM-I Wk 6–7','Critical-radius numericals; Carnot PYQs',['XE2.2','XE4.4','XE0.2'],'24'],
+ ['2026-11-29','REVIEW','Revise Days 5–10 (defects, phase diagrams, diffusion, nucleation, first and second laws, calculus). NPTEL GATE Sunday mock (2–5 PM) if it has XE, otherwise a timed PYQ set. Re-solve every wrong question.'],
+ ['2026-11-30','Day 11','Precipitation and eutectoid transformations; overall kinetics (Avrami); TTT and CCT diagrams; martensite; glass transition','Porter Ch.5–6 · C Ch.10 · Bhadeshia PT','Clausius inequality; entropy; T–s diagrams; entropy change of ideal gases, liquids and solids','Cg Ch.7 · Laws Wk 4','Sequences and series: convergence; Cauchy condensation, ratio, root and integral tests','Paul\'s Series · Grewal','TTT-diagram questions; entropy-change numericals',['XE2.2','XE4.5','XE0.2'],'24'],
+ ['2026-12-01','Day 12','Elastic and plastic deformation; bonding and modulus; theoretical shear strength; slip; strengthening mechanisms (strain, solid solution, precipitate, grain size)','C Ch.6–7 · Mech Beh I','Entropy generation; increase-of-entropy principle; isentropic processes and isentropic efficiency','Cg Ch.7 · Kale Wk 4','Power series; radius of convergence; Taylor series','Paul\'s Calc II · EM-II Wk 4',"Schmid's law and Hall–Petch numericals; isentropic efficiency",['XE2.3','XE4.5','XE0.2'],'24'],
+ ['2026-12-02','Day 13','Griffith theory of fracture; fatigue (S–N curve, crack growth); creep stages and mechanisms; composites and rule of mixtures','C Ch.8, 16 · Mech Beh II','Exergy; second-law analysis of systems and control volumes; second-law efficiency; third law','Cg Ch.8 · Concepts of Thermo',"Gradient, divergence, curl; line integrals; Green's theorem",'K Ch.9–10 · EM-II Wk 1–2',"Griffith and rule-of-mixtures numericals; Green's theorem",['XE2.3','XE4.5','XE0.3'],'2'],
+ ['2026-12-03','Day 14','Electronic properties: Drude model and its failures; Fermi energy, Fermi surface, density of states; band theory; effective mass','Hummel Pt II · C Ch.18 · Haridoss','T-ds relations; Helmholtz and Gibbs functions; Gibbs and Maxwell relations','Cg Ch.12 · Basu Wk 2',"Complex numbers, Argand plane, polar form, De Moivre's theorem; analytic functions; Cauchy–Riemann equations",'K Ch.13 · EM-II Wk 3','Conductivity and Fermi-energy numericals; Cauchy–Riemann PYQs',['XE2.3','XE4.6','XE0.4'],'4'],
+ ['2026-12-04','Day 15','Semiconductors: intrinsic and extrinsic, carrier concentration, mobility, temperature dependence, drift vs diffusion, Hall effect; dielectric, piezoelectric, ferroelectric','C Ch.18 · Kasap · Swaminathan','Joule–Thomson coefficient and inversion curve; β and κ; cp−cv; Clapeyron and Clausius–Clapeyron equations','Cg Ch.12 · Basu Wk 2','First-order ODEs: separable, exact, linear, Bernoulli','K Ch.1 · DEE Wk 1–2','Hall-coefficient numericals; Clausius–Clapeyron',['XE2.3','XE4.6','XE0.5'],'24'],
+ ['2026-12-05','Day 16','Magnetic properties: origin of magnetism; dia-, para-, ferro-, ferri-, antiferromagnetism; domains, hysteresis; hard vs soft magnets','C Ch.20 · Hummel Pt IV · Garg','Carnot vapour cycle; ideal Rankine cycle','Cg Ch.10 · Basu Wk 7 · LearnChemE','Second-order constant-coefficient ODEs; Cauchy–Euler equation','K Ch.2 · DEE Wk 3–4','Magnetism PYQs; Rankine-cycle efficiency',['XE2.3','XE4.7','XE0.5'],'40'],
+ ['2026-12-06','REVIEW','Revise Days 11–16 (phase transformations, mechanical, electronic and magnetic properties, entropy, property relations, Rankine, series, vector calculus, complex variables, ODEs). Timed mixed set and analysis.'],
+ ['2026-12-07','Day 17','Thermal properties (Dulong–Petit, Einstein, Debye, Wiedemann–Franz, conductivity, diffusivity, expansion, thermoelectricity); optical properties','C Ch.19, 21 · Hummel Pt III, V','Simple vapour-compression refrigeration cycle','Cg Ch.11 · Basu Wk 9','Variable coefficients; Wronskian; variation of parameters; eigenvalue problems; power-series solutions','K Ch.2, 5 · DEE Wk 3–5, 7','Wiedemann–Franz numericals; COP of vapour-compression refrigeration',['XE2.3','XE4.7','XE0.5'],'4'],
+ ['2026-12-08','Day 18','XRD: Bragg\'s law, structure factor, systematic absences, indexing cubic patterns','Cullity · Sangal XRD','Otto and Diesel cycles','Cg Ch.9 · Basu Wk 4','Classifying PDEs; separation of variables; Fourier series','K Ch.11–12 · DEE Wk 8','Indexing and structure-factor PYQs (asked often)',['XE2.4','XE4.7','XE0.6'],'24'],
+ ['2026-12-09','Day 19','UV-Vis, IR, Raman; band-gap measurement; optical microscopy, SEM, TEM (resolution, depth of field); EDS; tensile test; hardness; electrical measurement; TGA and DSC','Leng · C Ch.6 · Sankaran','Brayton cycle; mixed cycle PYQs','Cg Ch.9 · Basu Wk 6','1-D heat and wave equations; 2-D Laplace equation','Paul\'s DE · DEE Wk 9–12','Resolution and true-stress numericals; Brayton cycle',['XE2.4','XE4.7','XE0.6'],'4'],
+ ['2026-12-10','Day 20','Heat treatment of steels (pearlite, bainite, martensite; annealing, normalizing, quenching, tempering); precipitation hardening of Al alloys and ageing curves','C Ch.10–11 · HT course · Bhadeshia steels',"Ideal-gas mixtures: Dalton's and Amagat's laws; mixture properties",'Cg Ch.13 · Basu Wk 10',"Probability axioms; conditional probability; total probability; Bayes' theorem",'K Ch.24 · Somesh Wk 1–2','Heat-treatment PYQs; Bayes problems',['XE2.5','XE4.8','XE0.7'],'20'],
+ ['2026-12-11','Day 21','Silicon processing: metallurgical to electronic-grade Si, zone refining, Czochralski growth, oxidation, doping, photolithography; powders and sintering','Swaminathan · C Ch.13','Air–water vapour mixtures: specific and relative humidity, dew point, DBT, WBT, adiabatic saturation temperature','Cg Ch.14 · Basu Wk 11','Random variables: mean, variance; Binomial, Poisson, Normal; correlation and regression','K Ch.24–25 · Somesh Wk 3–5','Humidity calculations; distribution PYQs',['XE2.5','XE4.8','XE0.7'],'40'],
+ ['2026-12-12','Day 22','Corrosion: electrode potentials, galvanic series, Nernst equation, polarization, passivation; forms of corrosion; prevention','C Ch.17 · Mondal Corrosion I–II','Psychrometric chart and processes: heating, cooling, humidification, dehumidification, mixing, evaporative cooling','Cg Ch.14 · Kale Wk 10 · LearnChemE','Gauss elimination, LU decomposition; Lagrange and Newton interpolation','K Ch.19–20 · Nayak Wk 1, 4–5','Nernst numericals; psychrometric PYQs',['XE2.6','XE4.8','XE0.8'],'4'],
+ ['2026-12-13','REVIEW','Revise Days 17–22 (thermal and optical properties, XRD, characterization, processing, corrosion, refrigeration and gas cycles, mixtures, psychrometry, PDEs, probability, numerical methods). Timed mixed set.'],
+ ['2026-12-14','Day 23','Polymer degradation: swelling, dissolution, bond rupture (radiation, chemical, thermal), weathering. Finish the XE2 formula sheet.','C Ch.17 · Mondal Env. Degradation','Finish the XE4 formula sheet; mixed PYQs from all 8 sections','Cg Ch.1–14',"Bisection, Newton–Raphson; trapezoidal, Simpson's 1/3 and 3/8 rules; Euler's method",'K Ch.19, 21 · Nayak Wk 2, 7–8','Numerical-methods PYQs, solved with a calculator',['XE2.6','XE4.1','XE0.8'],'0'],
+ ['2026-12-15','MOCK','Mock 1: full past XE paper (2025) under exam conditions, 3 hours. Afternoon: analyse it and re-study your 3 weakest topics.'],
+ ['2026-12-16','MOCK','Mock 2: full past XE paper (2024), timed. Afternoon: analyse it and go through all three formula sheets.'],
+ ['2026-12-17','MOCK','Mock 3: full past XE paper (2023), timed. Afternoon: list your weak topics for the revision weeks ahead.'],
+];
+
+// Phase 2 & 3: [date, [[sec, text, codes?, hy?], ...]]
+const P2 = [
+ ['2026-12-18',[['REV','Turn the 3 mock analyses into one weak-topic list; rank by marks lost'],['XE2','Topic-wise PYQs: XE2.1 structure, crystallography, defects (all years)',['XE2.1']],['APP','ISTA: register on portal, check which groups are recruiting, pick 3–5 groups']]],
+ ['2026-12-19',[['XE4','Topic-wise PYQs: XE4.1–4.3 basic concepts, pure substances, first law',['XE4.1','XE4.2','XE4.3'],1],['XE0','Topic-wise PYQs: XE0.1 linear algebra',['XE0.1'],1],['APP','ISTA: write statement of purpose draft']]],
+ ['2026-12-20',[['MOCK','Full mock (test series or past XE paper 2022), 3 hours + analysis'],['APP','ISTA: three short answers (groups, ISTA paper with DOI, research experience)']]],
+ ['2026-12-21',[['XE2','Topic-wise PYQs: XE2.2 phase diagrams, diffusion, nucleation, TTT',['XE2.2'],1],['XE0','Topic-wise PYQs: XE0.2 calculus',['XE0.2'],1]]],
+ ['2026-12-22',[['XE4','Topic-wise PYQs: XE4.4–4.5 second law and entropy',['XE4.4','XE4.5'],1],['APP','BARC OCES/DGFS: apply as soon as the window opens (2026 cycle: 22 Dec – 21 Jan) at barcocesexam.in']]],
+ ['2026-12-23',[['XE2','Topic-wise PYQs: XE2.3 mechanical properties',['XE2.3'],1],['XE0','Topic-wise PYQs: XE0.3 vector calculus + XE0.4 complex variables',['XE0.3','XE0.4']]]],
+ ['2026-12-24',[['XE4','Topic-wise PYQs: XE4.6 thermodynamic relations',['XE4.6']],['XE2','Re-study weak topic #1 from your list']]],
+ ['2026-12-25',[['REV','Light day: revise all three formula sheets'],['APP','Send ISTA draft to one referee or senior for feedback']]],
+ ['2026-12-26',[['XE2','Topic-wise PYQs: XE2.3 electronic, magnetic, thermal, optical properties (new 2027 topics too)',['XE2.3']],['XE0','Topic-wise PYQs: XE0.5 ODEs',['XE0.5'],1]]],
+ ['2026-12-27',[['MOCK','Full mock, 3 hours + analysis']]],
+ ['2026-12-28',[['XE4','Topic-wise PYQs: XE4.7 cycles (Rankine, refrigeration, Otto, Diesel, Brayton)',['XE4.7'],1],['XE0','Topic-wise PYQs: XE0.6 PDEs',['XE0.6']]]],
+ ['2026-12-29',[['XE2','Topic-wise PYQs: XE2.4 XRD and characterization',['XE2.4'],1],['XE0','Topic-wise PYQs: XE0.7 probability and statistics',['XE0.7'],1]]],
+ ['2026-12-30',[['XE4','Topic-wise PYQs: XE4.8 gas mixtures and psychrometry',['XE4.8'],1],['XE0','Topic-wise PYQs: XE0.8 numerical methods',['XE0.8']]]],
+ ['2026-12-31',[['XE2','Topic-wise PYQs: XE2.5 processing + XE2.6 degradation',['XE2.5','XE2.6']],['APP','ISTA: final check of CV, transcripts and referee details']]],
+ ['2027-01-01',[['REV','Re-study weak topics #2 and #3']]],
+ ['2027-01-02',[['APP','ISTA: SUBMIT (deadline 8 Jan, 3 PM CET; letters by 12 Jan)'],['XE2','Re-solve every PYQ you got wrong in XE2']]],
+ ['2027-01-03',[['MOCK','Full mock, 3 hours + analysis']]],
+ ['2027-01-04',[['XE4','Re-solve every PYQ you got wrong in XE4'],['APP','NUS: submit only if Prof. Ong confirmed CPI eligibility (deadline 15 Jan)']]],
+ ['2027-01-05',[['XE0','Re-solve every PYQ you got wrong in XE0'],['REV','Formula sheets: add anything missing from PYQs']]],
+ ['2027-01-06',[['XE2','New 2027 topics drill: Drude/Debye models, UV-Vis/IR/Raman, silicon processing',['XE2.3','XE2.4','XE2.5']]]],
+ ['2027-01-07',[['XE4','Mixed numerical set across all XE4 sections, timed',['XE4.1','XE4.3','XE4.5','XE4.7','XE4.8']]]],
+ ['2027-01-08',[['REV','Weak topic re-study (from latest mock)']]],
+ ['2027-01-09',[['XE2','Mixed timed set across all XE2 sections',['XE2.1','XE2.2','XE2.3','XE2.4']]]],
+ ['2027-01-10',[['MOCK','Full mock, 3 hours + analysis'],['APP','BARC: confirm application is submitted and fee paid (2026 cycle closed 21 Jan)']]],
+ ['2027-01-11',[['XE0','Mixed timed set across all XE0 sections',['XE0.1','XE0.2','XE0.5','XE0.7']]]],
+ ['2027-01-12',[['REV','Weak topic re-study']]],
+ ['2027-01-13',[['XE4','Re-solve wrong questions from the last two mocks']]],
+ ['2027-01-14',[['XE2','Re-solve wrong questions from the last two mocks']]],
+ ['2027-01-15',[['REV','Formula sheets: full read-through']]],
+ ['2027-01-16',[['REV','Weak topic re-study']]],
+ ['2027-01-17',[['MOCK','Full mock, 3 hours + analysis']]],
+ // Phase 3
+ ['2027-01-18',[['REV','Re-study the 3 topics that lost the most marks in mocks so far']]],
+ ['2027-01-19',[['MOCK','Full mock, 3 hours + 2 hours analysis']]],
+ ['2027-01-20',[['REV','Weak topics from mock; re-solve its wrong questions']]],
+ ['2027-01-21',[['REV','Formula sheets: XE2']]],
+ ['2027-01-22',[['MOCK','Full mock, 3 hours + 2 hours analysis']]],
+ ['2027-01-23',[['REV','Formula sheets: XE4 + XE0']]],
+ ['2027-01-24',[['REV','Weak topics; PYQs of those topics only']]],
+ ['2027-01-25',[['MOCK','Full mock, 3 hours + 2 hours analysis']]],
+ ['2027-01-26',[['REV','Weak topics from mock']]],
+ ['2027-01-27',[['REV','All three formula sheets, timed recall (write from memory, then check)']]],
+ ['2027-01-28',[['MOCK','Full mock, 3 hours + 2 hours analysis']]],
+ ['2027-01-29',[['REV','Weak topics from mock']]],
+ ['2027-01-30',[['REV','Re-solve all mistakes from the last 4 mocks']]],
+ ['2027-01-31',[['MOCK','Full mock, 3 hours + analysis']]],
+ ['2027-02-01',[['REV','Formula sheets + exam strategy (order of sections, time per section, calculator practice)']]],
+ ['2027-02-02',[['MOCK','Final full mock (only if exam is 6 Feb or later)']]],
+ ['2027-02-03',[['REV','Light revision of formula sheets only']]],
+ ['2027-02-04',[['REV','Light revision; check admit card, centre, documents']]],
+ ['2027-02-05',[['REV','Rest. Sleep early. No new topics.']]],
+];
+
+// build tasks
+const days = []; // {date, label, phase, tasks:[{id,sec,text,ref,codes,hy}]}
+P1.forEach(r => {
+  const [date,label] = r; const t = [];
+  if (r.length === 3) {
+    const sec = label === 'MOCK' ? 'MOCK' : 'REV';
+    t.push({sec, text:r[2]});
+  } else {
+    const hy = r[10] || '';
+    t.push({sec:'XE2', text:r[2], ref:r[3], codes:[r[9][0]], hy:hy.includes('2')});
+    t.push({sec:'XE4', text:r[4], ref:r[5], codes:[r[9][1]], hy:hy.includes('4')});
+    t.push({sec:'XE0', text:r[6], ref:r[7], codes:[r[9][2]], hy:hy.includes('0')});
+    t.push({sec:'PR', text:'Practice (1 h): '+r[8]+' + one-page formula summary', codes:r[9]});
+  }
+  days.push({date, label: label.startsWith('Day') ? label : (label === 'REVIEW' ? 'Weekly review' : 'Full mock'), phase:1, tasks:t});
+});
+P2.forEach(([date, list]) => {
+  const t = list.map(([sec,text,codes,hy]) => ({sec, text, codes:codes||[], hy:!!hy}));
+  days.push({date, label: date < '2027-01-18' ? 'PYQs & applications' : 'Mocks & revision', phase: date < '2027-01-18' ? 2 : 3, tasks:t});
+});
+// General Aptitude: 20 min daily from 18 Dec to 2 days before exam
+days.forEach(d => { if (d.date >= '2026-12-18' && d.date <= '2027-02-04') d.tasks.push({sec:'GA', text:'General Aptitude: 20 minutes (verbal, numerical, spatial)'}); });
+days.forEach(d => d.tasks.forEach((t,i) => { t.id = d.date + '#' + i; t.base = d.date; }));
+const ALL = days.flatMap(d => d.tasks);
+const byId = Object.fromEntries(ALL.map(t => [t.id, t]));
+const dateOf = t => S.moves[t.id] || t.base;
+
+// ---------- syllabus ----------
+const SYL = [
+ ['Engineering Mathematics (XE0)', [
+  ['XE0.1','Linear Algebra','Determinant, inverse, rank; linear systems; eigenvalues/vectors; diagonalization; Cayley–Hamilton'],
+  ['XE0.2','Calculus','Single and two variables; maxima/minima; Lagrange multipliers; double integrals; sequences and series'],
+  ['XE0.3','Vector Calculus','Gradient, divergence, curl; line integrals; Green\'s theorem'],
+  ['XE0.4','Complex Variables','Argand plane, polar form, De Moivre; analytic functions; Cauchy–Riemann'],
+  ['XE0.5','Ordinary Differential Equations','First order; second order constant coefficients; Cauchy–Euler; Wronskian; variation of parameters; power series'],
+  ['XE0.6','Partial Differential Equations','Classification; 1-D heat and wave; 2-D Laplace; separation of variables; Fourier series'],
+  ['XE0.7','Probability and Statistics','Axioms; conditional; Bayes; mean/variance; Binomial, Poisson, Normal; correlation and regression'],
+  ['XE0.8','Numerical Methods','LU, Gauss elimination; interpolation; bisection, Newton–Raphson; trapezoidal, Simpson; Euler'],
+ ]],
+ ['Materials Science (XE2)', [
+  ['XE2.1','Classification and Structure','Crystallography, Bravais lattices, Miller indices, CCP/HCP/BCC, carbon, compounds, glasses, solid solutions, polymers, defects'],
+  ['XE2.2','Thermodynamics, Kinetics, Phase Transformations','Phase rule, phase diagrams, common tangent, diffusion, nucleation, solidification, TTT/CCT, martensite, glass transition'],
+  ['XE2.3','Properties and Applications','Mechanical, electronic (Drude, band theory, semiconductors), magnetic, thermal (Debye), optical'],
+  ['XE2.4','Characterization','XRD, UV-Vis/IR/Raman, microscopy, EDS, tensile and hardness tests, electrical, TGA/DSC'],
+  ['XE2.5','Processing','Heat treatment of steels and Al alloys; silicon processing; powders and sintering'],
+  ['XE2.6','Degradation','Corrosion (Nernst, galvanic series, passivation); polymer degradation'],
+ ]],
+ ['Thermodynamics (XE4)', [
+  ['XE4.1','Basic Concepts','Systems, properties, state postulate, heat and work, zeroth law'],
+  ['XE4.2','Properties of Pure Substances','P-v-T, triple and critical points, ideal and real gases, van der Waals'],
+  ['XE4.3','First Law','Energy, enthalpy, specific heats; closed systems; SFEE for devices'],
+  ['XE4.4','Second Law','Heat engines, refrigerators, COP; Kelvin–Planck, Clausius; Carnot'],
+  ['XE4.5','Entropy','Clausius inequality, entropy generation, T-s diagrams, isentropic efficiency, second-law efficiency'],
+  ['XE4.6','Thermodynamic Relations','T-ds, Helmholtz, Gibbs, Maxwell; Joule–Thomson; Clapeyron'],
+  ['XE4.7','Thermodynamic Cycles','Carnot vapour, Rankine, vapour-compression refrigeration, Otto, Diesel, Brayton'],
+  ['XE4.8','Mixtures of Ideal Gases','Dalton, Amagat; air–water vapour; humidity; psychrometric processes'],
+ ]],
+];
+
+// ---------- helpers ----------
+const $ = s => document.querySelector(s);
+const el = (tag, attrs={}, ...kids) => { const e = document.createElement(tag); for (const [k,v] of Object.entries(attrs)) { if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v); } kids.flat().forEach(k => k != null && e.append(k.nodeType ? k : document.createTextNode(k))); return e; };
+const exam = () => S.exam || '2027-02-06';
+const active = () => ALL.filter(t => dateOf(t) < exam());
+
+// ---------- render: plan ----------
+function renderPlan(){
+  const host = $('#days'); host.innerHTML = '';
+  const hideDone = $('#hideDone').checked, onlyOver = $('#onlyOver').checked, sec = $('#secFilter').value;
+  // group by effective date
+  const groups = {};
+  active().forEach(t => { const k = dateOf(t); (groups[k] = groups[k] || []).push(t); });
+  const labels = Object.fromEntries(days.map(d => [d.date, d]));
+  let lastPhase = 0;
+  Object.keys(groups).sort().forEach(date => {
+    let tasks = groups[date].slice().sort((a,b) => (a.base === date) === (b.base === date) ? 0 : (a.base === date ? -1 : 1));
+    if (sec) tasks = tasks.filter(t => t.sec === sec);
+    if (!tasks.length) return;
+    const allDone = tasks.every(t => S.done[t.id]);
+    const over = date < TODAY && !allDone;
+    if (hideDone && allDone) return;
+    if (onlyOver && !over) return;
+    const info = labels[date] || {label:'Catch-up', phase: date < '2026-12-18' ? 1 : date < '2027-01-18' ? 2 : 3};
+    if (info.phase !== lastPhase) {
+      lastPhase = info.phase;
+      host.append(el('div', {class:'phase'}, ['', 'Phase 1 · Cover the syllabus (18 Nov – 17 Dec)', 'Phase 2 · PYQs and applications (18 Dec – 17 Jan)', 'Phase 3 · Mock tests and revision (18 Jan – exam)'][info.phase]));
+    }
+    const n = tasks.filter(t => S.done[t.id]).length;
+    const box = el('div', {class:'day' + (date === TODAY ? ' today' : '') + (over ? ' overdue' : '') + (S.collapsed[date] ? ' collapsed' : ''), id:'d-'+date});
+    const head = el('div', {class:'dh', role:'button', tabindex:'0', 'aria-expanded': String(!S.collapsed[date]), onclick:() => toggle(date), onkeydown:e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(date); } }},
+      el('span', {}, el('span', {class:'d'}, fmt(date)), ' ', el('span', {class:'muted'}, '· ' + info.label + (date === TODAY ? ' · TODAY' : ''))),
+      el('span', {class:'meta'}, `${n}/${tasks.length}` + (over ? ' · overdue' : '')));
+    const ul = el('ul');
+    tasks.forEach(t => {
+      const cb = el('input', {type:'checkbox', id:'c-'+t.id, 'aria-label': t.text});
+      cb.checked = !!S.done[t.id];
+      cb.addEventListener('change', () => { if (cb.checked) { S.done[t.id] = 1; S.doneAt[t.id] = TODAY; } else { delete S.done[t.id]; delete S.doneAt[t.id]; } save(); renderAll(false); });
+      const lab = el('label', {for:'c-'+t.id, class:'txt'}, t.text,
+        t.hy ? el('span', {class:'hy'}, 'HIGH YIELD') : null,
+        t.base !== date ? el('span', {class:'moved'}, '↪ moved from ' + fmt(t.base)) : null,
+        t.ref ? el('span', {class:'ref'}, t.ref) : null);
+      ul.append(el('li', {class: S.done[t.id] ? 'done' : ''}, cb, el('span', {class:'tag t-'+t.sec}, t.sec), lab));
+    });
+    box.append(head, ul); host.append(box);
+  });
+  if (!host.children.length) host.append(el('p', {class:'muted'}, 'Nothing to show with these filters.'));
+}
+function toggle(date){ S.collapsed[date] = !S.collapsed[date]; if (!S.collapsed[date]) delete S.collapsed[date]; save(); renderPlan(); }
+
+// ---------- render: stats + status ----------
+function renderStats(){
+  const act = active();
+  const done = act.filter(t => S.done[t.id]).length;
+  const due = act.filter(t => dateOf(t) <= TODAY);
+  const dueOpen = act.filter(t => dateOf(t) < TODAY && !S.done[t.id]);
+  const days2 = diffDays(TODAY, exam());
+  $('#sDays').textContent = days2 >= 0 ? days2 : 'done';
+  $('#sDone').textContent = `${done} / ${act.length}`;
+  $('#sBar').style.width = (act.length ? 100*done/act.length : 0) + '%';
+  $('#sDue').textContent = `${due.filter(t => S.done[t.id]).length} / ${due.length}`;
+  const weekAgo = addDays(TODAY, -6);
+  const recent = Object.values(S.doneAt).filter(d => d >= weekAgo && d <= TODAY).length;
+  const pace = recent / 7;
+  $('#sPace').textContent = pace.toFixed(1) + ' / day';
+
+  // status
+  const card = $('#statusCard'); card.classList.remove('behind','far');
+  const remaining = act.length - done;
+  const daysLeft = Math.max(diffDays(TODAY, exam()), 1);
+  const need = remaining / daysLeft;
+  // how many plan days of work are overdue
+  const overdueDays = new Set(dueOpen.map(dateOf)).size;
+  const avgPerDay = act.length / Math.max(new Set(act.map(dateOf)).size, 1);
+  const behindDays = dueOpen.length / avgPerDay;
+  let proj = '';
+  if (pace > 0) { const fin = addDays(TODAY, Math.ceil(remaining / pace)); proj = ` At your 7-day pace (${pace.toFixed(1)} tasks/day) you would finish on <b>${fmt(fin)}</b>${fin > exam() ? ' — <b>after</b> the exam' : ''}.`; }
+  if (TODAY < '2026-11-18') {
+    $('#stTitle').textContent = 'Plan starts 18 Nov 2026';
+    $('#stBody').innerHTML = 'Nothing is due yet.';
+    $('#catchup').classList.add('hidden');
+  } else if (!dueOpen.length) {
+    $('#stTitle').textContent = '✓ On track';
+    $('#stBody').innerHTML = `Everything due before today is done. ${remaining} tasks left; you need about <b>${need.toFixed(1)} tasks/day</b> to finish before the exam.` + proj;
+    $('#catchup').classList.add('hidden');
+  } else {
+    card.classList.add(behindDays > 4 ? 'far' : 'behind');
+    const bySec = {}; dueOpen.forEach(t => bySec[t.sec] = (bySec[t.sec]||0) + 1);
+    const secTxt = Object.entries(bySec).map(([k,v]) => `${k}: ${v}`).join(' · ');
+    $('#stTitle').textContent = `Behind by ${dueOpen.length} task${dueOpen.length>1?'s':''} (≈ ${behindDays.toFixed(1)} plan days)`;
+    $('#stBody').innerHTML = `Overdue tasks from ${overdueDays} day${overdueDays>1?'s':''} (${secTxt}). You now need about <b>${need.toFixed(1)} tasks/day</b> to finish before the exam.` + proj;
+    $('#catchup').classList.remove('hidden');
+    renderTriage(dueOpen, behindDays);
+  }
+}
+
+function renderTriage(open, behindDays){
+  const t = $('#triage'); t.innerHTML = '';
+  const hy = open.filter(x => x.hy || x.sec === 'PR' || x.sec === 'MOCK' || x.sec === 'APP');
+  const advice = behindDays <= 3 ? 'Use the next Sunday review morning and spread over 3–5 days.'
+    : behindDays <= 7 ? 'Spread over 7–10 days. Skip lectures for topics you already know; do HIGH YIELD, practice, mocks and applications first.'
+    : 'More than a week behind: spread over 10 days and plan to halve the Phase 2 topic-wise PYQ days for your strongest section. Never drop mocks.';
+  t.append(el('p', {class:'muted', style:'margin:0 0 6px'}, advice));
+  if (hy.length) {
+    t.append(el('div', {}, el('b', {}, 'Do these overdue tasks first:')));
+    const ul = el('ul', {class:'list'});
+    hy.slice(0, 8).forEach(x => ul.append(el('li', {}, el('span', {class:'tag t-'+x.sec, style:'margin-right:6px'}, x.sec), x.text.length > 110 ? x.text.slice(0,110)+'…' : x.text, el('span', {class:'muted'}, ' (' + fmt(x.base) + ')'))));
+    t.append(ul);
+  }
+}
+
+// catch-up planner: move overdue unchecked tasks to the next N days (optionally only review/sunday days)
+function makePlan(){
+  const open = active().filter(t => dateOf(t) < TODAY && !S.done[t.id]);
+  if (!open.length) return;
+  // priority order: applications/mocks/high-yield/practice first, then the rest, oldest first
+  const pr = t => (t.sec === 'APP' ? 0 : t.sec === 'MOCK' ? 1 : t.hy ? 2 : t.sec === 'PR' ? 3 : 4);
+  open.sort((a,b) => pr(a) - pr(b) || a.base.localeCompare(b.base));
+  const n = +$('#spread').value, sundays = $('#sundaysOnly').checked;
+  let slots = [];
+  for (let i = 0; slots.length < n && i < 60; i++) {
+    const d = addDays(TODAY, i);
+    if (d >= exam()) break;
+    if (!sundays || parse(d).getDay() === 0) slots.push(d);
+  }
+  if (!slots.length) slots = [TODAY];
+  open.forEach((t, i) => { S.moves[t.id] = slots[i % slots.length]; });
+  save(); renderAll(true);
+  $('#stBody').insertAdjacentHTML('beforeend', `<br><b>Moved ${open.length} task(s) onto ${slots.length} day(s) starting ${fmt(slots[0])}.</b> They are marked “↪ moved from”.`);
+}
+function undoMoves(){ S.moves = {}; save(); renderAll(true); }
+
+// ---------- render: syllabus ----------
+function renderSyll(){
+  const host = $('#syll'); host.innerHTML = '';
+  SYL.forEach(([title, secs]) => {
+    const wrap = el('div', {class:'card sec'}, el('h3', {style:'margin-top:0'}, title));
+    secs.forEach(([code, name, desc]) => {
+      const ts = ALL.filter(t => (t.codes||[]).includes(code));
+      const d = ts.filter(t => S.done[t.id]).length;
+      const pct = ts.length ? Math.round(100*d/ts.length) : 0;
+      const cb = el('input', {type:'checkbox', id:'s-'+code});
+      cb.checked = !!S.conf[code];
+      cb.addEventListener('change', () => { if (cb.checked) S.conf[code] = 1; else delete S.conf[code]; save(); });
+      wrap.append(el('div', {class:'srow'},
+        el('div', {}, el('div', {class:'n'}, code + ' · ' + name), el('div', {class:'desc'}, desc)),
+        el('div', {}, el('div', {class:'muted', style:'font-size:.8rem'}, `Plan ${pct}% (${d}/${ts.length})`), el('div', {class:'bar'}, el('i', {style:`width:${pct}%`}))),
+        el('label', {for:'s-'+code}, cb, 'Confident')));
+    });
+    host.append(wrap);
+  });
+}
+
+function renderAll(full){ renderStats(); renderPlan(); if (full !== false || !$('#tab-syll').classList.contains('hidden')) renderSyll(); }
+
+// ---------- events ----------
+$('#examDate').value = exam();
+$('#examDate').addEventListener('change', e => { if (e.target.value) { S.exam = e.target.value; save(); renderAll(true); } });
+['#hideDone','#onlyOver','#secFilter'].forEach(s => $(s).addEventListener('change', renderPlan));
+$('#planBtn').addEventListener('click', makePlan);
+$('#undoBtn').addEventListener('click', undoMoves);
+$('#jumpToday').addEventListener('click', () => {
+  const target = document.getElementById('d-'+TODAY) || [...document.querySelectorAll('.day')].find(d => d.id.slice(2) >= TODAY);
+  if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+});
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+  ['plan','syll','rules'].forEach(t => $('#tab-'+t).classList.toggle('hidden', t !== b.dataset.tab));
+  if (b.dataset.tab === 'syll') renderSyll();
+}));
+// theme
+const applyTheme = () => { if (S.theme) document.documentElement.setAttribute('data-theme', S.theme); else document.documentElement.removeAttribute('data-theme'); };
+$('#themeBtn').addEventListener('click', () => {
+  const dark = S.theme ? S.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  S.theme = dark ? 'light' : 'dark'; save(); applyTheme();
+});
+applyTheme();
+// export / import / reset
+$('#exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(S, null, 1)], {type:'application/json'});
+  const a = el('a', {href: URL.createObjectURL(blob), download: `gate-xe-progress-${TODAY}.json`}); document.body.append(a); a.click(); a.remove();
+});
+$('#importFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try { const data = JSON.parse(await f.text()); if (!data || typeof data.done !== 'object') throw 0; Object.keys(S).forEach(k => delete S[k]); Object.assign(S, {done:{},doneAt:{},moves:{},conf:{},collapsed:{}}, data); save(); $('#examDate').value = exam(); applyTheme(); renderAll(true); $('#ioMsg').textContent = 'Progress imported.'; }
+  catch (err) { $('#ioMsg').textContent = 'That file is not a valid progress export.'; }
+});
+$('#resetBtn').addEventListener('click', () => {
+  if (!confirm('Erase all ticks, catch-up moves and settings on this device?')) return;
+  Object.keys(S).forEach(k => delete S[k]); Object.assign(S, {done:{},doneAt:{},moves:{},conf:{},exam:'2027-02-06',theme:'',collapsed:{}}); save(); $('#examDate').value = exam(); applyTheme(); renderAll(true); $('#ioMsg').textContent = 'Reset done.';
+});
+
+renderAll(true);
+})();
+</script>
+</body>
+</html>
